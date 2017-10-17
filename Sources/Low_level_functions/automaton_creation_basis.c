@@ -67,7 +67,7 @@ cdfa__automaton *cdfa__empty_automaton(const unsigned int nb_states,
 	cdfa__automaton *a = NULL ;
 
 	if (nb_states == 0){
-		printf(stderr,"cdfa__empty_automaton : automaton with no state is not authorized\n");
+		fprintf(stderr,"cdfa__empty_automaton : automaton with no state is not authorized\n");
 		return NULL;
 	}
 
