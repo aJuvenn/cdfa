@@ -21,17 +21,11 @@ cdfa__automaton *cdfa__kleen_star_automaton(const cdfa__automaton * const a);
 
 cdfa__automaton *cdfa__minimal_automaton(const cdfa__automaton * const a);
 
-unsigned int cdfa__union_of_the_letters_to_consider(cdfa__letter dest_letters[],
-											  	  	 const cdfa__automaton * const a_1,
-											  	  	 const cdfa__automaton * const a_2);
-
 cdfa__automaton *cdfa__language_union_automaton(const cdfa__automaton * const a_1, const cdfa__automaton * const a_2);
 
 cdfa__automaton *cdfa__language_intersection_automaton(const cdfa__automaton * const a_1, const cdfa__automaton * const a_2);
 
-unsigned int cdfa__union_of_the_letters_to_consider(cdfa__letter dest_letters[],
-											  	  	 const cdfa__automaton * const a_1,
-											  	  	 const cdfa__automaton * const a_2);
+
 
 
 

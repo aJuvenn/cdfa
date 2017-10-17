@@ -23,6 +23,10 @@ cdfa__automaton_state **new_transition_matrix(const unsigned int nb_state, const
 	unsigned int i ;
 	unsigned int j ;
 
+	if (nb_letter == 0){
+		return NULL;
+	}
+
 	state_array = malloc(nb_state*nb_letter*sizeof(cdfa__automaton_state));
 
 	if (state_array == NULL){
@@ -60,7 +64,14 @@ cdfa__automaton *cdfa__empty_automaton(const unsigned int nb_states,
 										 const cdfa__letter considered_letters[])
 {
 	unsigned int i;
-	cdfa__automaton *a = malloc(sizeof(cdfa__automaton));
+	cdfa__automaton *a = NULL ;
+
+	if (nb_states == 0){
+		printf(stderr,"cdfa__empty_automaton : automaton with no state is not authorized\n");
+		return NULL;
+	}
+
+	a = malloc(sizeof(cdfa__automaton));
 
 	if (a == NULL){
 		fprintf(stderr,"cdfa__empty_automaton : malloc returned NULL\n");
@@ -101,7 +112,7 @@ cdfa__automaton *cdfa__empty_automaton(const unsigned int nb_states,
 
 	a->transitions = new_transition_matrix(nb_states,nb_considered_letters);
 
-	if (a->transitions == NULL){
+	if (a->transitions == NULL && nb_considered_letters != 0){
 		fprintf(stderr,"cdfa__empty_automaton : malloc returned NULL\n");
 		cdfa__free_automaton(a);
 		return NULL;

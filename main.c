@@ -12,27 +12,41 @@
 
 
 
+
+int cdfa__read_expression(const char **cursor,
+							unsigned int *nb_automaton_stack,
+							cdfa__automaton *automaton_stack[],
+							char char_stack[]);
+
+
+
 int main(int argc, char **argv)
 {
-	cdfa__automaton *a = cdfa__word_recognizing_automaton("caca");
+	char str[256];
+	char char_stack[256];
+	cdfa__automaton *automaton_stack[256];
+	unsigned int nb_automaton_stack = 0;
+	const char *cursor = NULL;
+	int no_error;
 
-	cdfa__print_automaton(a);
+	str[0] = 0;
 
-	cdfa__automaton *b = cdfa__kleen_star_automaton(a);
+	while (str[0] != 's'){
 
-	cdfa__print_automaton(b);
+		cursor = str;
+		nb_automaton_stack = 0;
+		printf("\nEnter string : ");
+		fgets(str,256,stdin);
 
-	cdfa__automaton *c = cdfa__word_recognizing_automaton("capouca");
-	cdfa__print_automaton(c);
+		no_error = cdfa__read_expression(&cursor,&nb_automaton_stack,automaton_stack,char_stack);
 
-	cdfa__automaton *d = cdfa__language_concatenation_automaton(b,c);
-	cdfa__print_automaton(d);
-
-	cdfa__automaton *e = cdfa__kleen_plus_automaton(d);
-	cdfa__print_automaton(e);
-
-	cdfa__automaton *f = cdfa__minimal_automaton(e);
-	cdfa__print_automaton(f);
+		if (!no_error){
+			printf("Invalid string\n");
+		} else {
+			printf("Valid string : %u automatons in stack\n",nb_automaton_stack);
+			cdfa__print_automaton(*automaton_stack);
+		}
+	}
 
 	return 0;
 }

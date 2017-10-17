@@ -29,7 +29,9 @@ unsigned int cdfa__number_of_considered_letters(const cdfa__automaton * const a)
 
 const cdfa__letter * const cdfa__considered_letter(const cdfa__automaton * const a);
 
-
+unsigned int cdfa__union_of_the_letters_to_consider(cdfa__letter dest_letters[],
+											  	  	 const cdfa__automaton * const a_1,
+											  	  	 const cdfa__automaton * const a_2);
 
 
 #endif /* CDFA_EDITION_INTERFACE_H_ */

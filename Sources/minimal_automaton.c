@@ -112,6 +112,10 @@ unsigned int **cdfa__new_matrix(const unsigned int height, const unsigned int wi
 	unsigned **matrix = NULL ;
 	unsigned int i ;
 
+	if (height == 0 || width == 0){
+		return NULL;
+	}
+
 	array = malloc(width*height*sizeof(unsigned int));
 
 	if (array == NULL){
@@ -145,6 +149,10 @@ cdfa__automaton_state ***cdfa__new_state_triple_matrix(const unsigned int height
 	cdfa__automaton_state *array = NULL;
 	cdfa__automaton_state **width_array = NULL;
 	cdfa__automaton_state ***new_matrix = NULL;
+
+	if (height == 0 || width == 0 || depth == 0){
+		return NULL;
+	}
 
 	array = malloc(height*width*depth*sizeof(cdfa__automaton_state));
 
@@ -184,20 +192,27 @@ cdfa__automaton_state ***cdfa__new_state_triple_matrix(const unsigned int height
 
 void cdfa__free_state_triple_matrix(cdfa__automaton_state ***m)
 {
-	if (m != NULL){
-
-		if (m[0] != NULL){
-
-			if (m[0][0] != NULL){
-				free(m[0][0]);
-			}
-
-			free(m[0]);
-		}
-
-		free(m);
+	if (m == NULL){
+		return;
 	}
+
+	if (m[0] == NULL){
+		free(m);
+		return;
+	}
+
+	if (m[0][0] == NULL){
+		free(m[0]);
+		free(m);
+		return;
+	}
+
+	free(m[0][0]);
+	free(m[0]);
+	free(m);
+
 }
+
 
 void cdfa__free_matrix(unsigned int **m)
 {
@@ -235,7 +250,7 @@ int cdfa__coaccessible_states_and_usefull_letters(int is_a_coaccessible_state[],
 
 	nb_previous_states = cdfa__new_matrix(nb_initial_states,nb_initial_considered_letters);
 
-	if (nb_previous_states == NULL){
+	if (nb_previous_states == NULL && nb_initial_considered_letters != 0){
 		fprintf(stderr,"cdfa__coaccessible_states_and_usefull_letters : cdfa__new_matrix returned NULL\n");
 		return 0;
 	}
@@ -249,7 +264,7 @@ int cdfa__coaccessible_states_and_usefull_letters(int is_a_coaccessible_state[],
 
 	previous_states = cdfa__new_state_triple_matrix(nb_initial_states,nb_initial_considered_letters,nb_initial_states);
 
-	if (previous_states == NULL){
+	if (previous_states == NULL && nb_initial_considered_letters != 0){
 		fprintf(stderr,"cdfa__coaccessible_states_and_usefull_letters : cdfa__new_state_triple_matrix returned NULL\n");
 		cdfa__free_matrix(nb_previous_states);
 		return 0;
