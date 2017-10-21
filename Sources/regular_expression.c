@@ -537,6 +537,7 @@ cdfa__automaton *cdfa__letter_choice_automaton(const cdfa__letter char_stack[])
 	cdfa__automaton *new_aut = NULL;
 	unsigned int size;
 	unsigned int i;
+	cdfa__letter first_known_letter;
 
 	size = 0;
 
@@ -544,15 +545,23 @@ cdfa__automaton *cdfa__letter_choice_automaton(const cdfa__letter char_stack[])
 		size++;
 	}
 
-	new_aut = cdfa__empty_automaton(3,size,char_stack);
+	if (size == 0){
+		fprintf(stderr,"cdfa__letter_choice_automaton : no letter into the stack\n");
+		return NULL;
+	}
+
+	new_aut = cdfa__empty_automaton(3,1,char_stack);
 
 	if (new_aut == NULL){
 		fprintf(stderr,"cdfa__letter_choice_automaton : cdfa__empty_automaton returned NULL\n");
 		return NULL;
 	}
 
-	for (i = 0 ; i < size ; i++){
-		cdfa__add_transition(1,char_stack[i],2,new_aut);
+	first_known_letter = char_stack[0];
+	cdfa__add_transition(1,first_known_letter,2,new_aut);
+
+	for (i = 1 ; i < size ; i++){
+		cdfa__give_same_meaning_as(char_stack[i],first_known_letter,new_aut);
 	}
 
 	cdfa__set_as_the_starting_state(1,new_aut);
@@ -773,24 +782,23 @@ int cdfa__read_word(const char **cursor,
 
 	a = cdfa__word_recognizing_automaton(char_stack);
 
+	//TODO error if retuns NULL (no need to free)
+
 	if (implicit_concatenation){
 
 		top_automaton = automaton_stack[--(*nb_automaton_stack)];
+
 		top_automaton_bis = cdfa__language_concatenation_automaton(top_automaton,a);
+		//TODO error if retuns NULL (then free top automatons and a)
+
 		automaton_stack[(*nb_automaton_stack)++] = top_automaton_bis;
 
 		cdfa__free_automaton(a);
 		cdfa__free_automaton(top_automaton);
-		a = NULL;
-		top_automaton = NULL;
-		top_automaton_bis = NULL;
 
 	} else {
 		automaton_stack[(*nb_automaton_stack)++] = a;
-		a = NULL;
 	}
-
-	//	implicit_concatenation = CDFA_TRUE;
 
 	return 1;
 }
@@ -820,18 +828,18 @@ int cdfa__read_power(const char **cursor,
 	if (implicit_concatenation){
 
 		top_automaton = automaton_stack[--(*nb_automaton_stack)];
+
 		a = cdfa__power_range_automaton(min_power_value,max_power_value,top_automaton);
+		//TODO error if retuns NULL (then free top automaton)
+
 		automaton_stack[(*nb_automaton_stack)++] = a;
 
 		cdfa__free_automaton(top_automaton);
-		top_automaton = NULL;
-		a = NULL;
 
 	} else {
 		return 0;
 	}
 
-	//implicit_concatenation = CDFA_TRUE;
 
 	return 1;
 }
@@ -861,22 +869,25 @@ int cdfa__read_letter_choice(const char **cursor,
 
 	a = cdfa__letter_choice_automaton((cdfa__letter *) char_stack);
 
+	//TODO error if retuns NULL (no need to free)
+
+
 	if (implicit_concatenation){
 
 		top_automaton = automaton_stack[--(*nb_automaton_stack)];
+
 		top_automaton_bis = cdfa__language_concatenation_automaton(top_automaton,a);
+
+		//TODO error if returns NULL (then free a and top automaton)
+
 		automaton_stack[(*nb_automaton_stack)++] = top_automaton_bis;
 
 		cdfa__free_automaton(a);
 		cdfa__free_automaton(top_automaton);
-		top_automaton = NULL;
-		top_automaton_bis = NULL;
 
 	} else {
 		automaton_stack[(*nb_automaton_stack)++] = a;
 	}
-
-	a = NULL;
 
 	return 1;
 }
@@ -934,18 +945,14 @@ int cdfa__read_unary_operator(const char **cursor,
 		break;
 
 	default:
+		//TODO free top automaton
 		return 0;
 	}
 
+	//TODO error if retuns NULL (then free top automatons)
+
 	automaton_stack[(*nb_automaton_stack)++] = a;
-
 	cdfa__free_automaton(top_automaton);
-	top_automaton = NULL;
-	a = NULL;
-
-
-
-	//implicit_concatenation = CDFA_TRUE;
 
 	return 1;
 }
@@ -984,26 +991,24 @@ int cdfa__read_binary_operator(const char **cursor,
 			break;
 
 		case CDFA_AND:
-			a = cdfa__language_concatenation_automaton(top_automaton_bis,top_automaton);
+			a = cdfa__language_intersection_automaton(top_automaton_bis,top_automaton);
 			break;
 
 		//case CDFA_MINUS:
-			//a = //TODO faire minus automaton
+			//a = //TODO write minus automaton
 			//break;
 
 		default:
+			//TODO error if returns NULL (then free top automatons)
 			return 0;
 
 		}
+		//TODO error if a is NULL (then free top automatons)
 
 		automaton_stack[(*nb_automaton_stack)++] = a;
 
 		cdfa__free_automaton(top_automaton);
 		cdfa__free_automaton(top_automaton_bis);
-
-		a = NULL;
-		top_automaton = NULL;
-		top_automaton_bis = NULL;
 
 	}
 
@@ -1068,7 +1073,11 @@ int cdfa__read_expression(const char **cursor,
 
 				top_automaton = automaton_stack[--(*nb_automaton_stack)];
 				top_automaton_bis = automaton_stack[--(*nb_automaton_stack)];
+
 				a = cdfa__language_concatenation_automaton(top_automaton_bis,top_automaton);
+
+				// TODO : error if returns NULL (free top automatons)
+
 				automaton_stack[(*nb_automaton_stack)++] = a;
 
 

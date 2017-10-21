@@ -97,6 +97,7 @@ cdfa__automaton *cdfa__empty_automaton(const unsigned int nb_states,
 	a->nb_states = nb_states;
 	a->current_state = CDFA_WELL;
 	a->starting_state = CDFA_WELL;
+	a->transition_matrix_width = nb_considered_letters;
 	a->is_a_final_state = malloc(nb_states*sizeof(int));
 
 	if (a->is_a_final_state == NULL){
@@ -179,7 +180,30 @@ int cdfa__add_transition(const cdfa__automaton_state src,
 }
 
 
+int cdfa__give_same_meaning_as(const cdfa__letter letter_to_give_meaning_to,
+		const cdfa__letter considered_letter_with_meaning,
+		cdfa__automaton * const a)
+{
 
+	unsigned int new_translated_index;
+
+	new_translated_index = a->char_translation_table[(unsigned int) considered_letter_with_meaning];
+
+	if (new_translated_index == CDFA_UNKNOWN_CHAR){
+		fprintf(stderr,"cdfa__give_same_meaning_as : provided considered letter is not\n");
+		return 0;
+	}
+
+	if (a->char_translation_table[(unsigned int) letter_to_give_meaning_to] != CDFA_UNKNOWN_CHAR){
+		fprintf(stderr,"cdfa__give_same_meaning_as : provided unknown letter is not\n");
+		return 0;
+	}
+
+	a->considered_letters[a->nb_considered_letters++] = letter_to_give_meaning_to;
+	a->char_translation_table[(unsigned int) letter_to_give_meaning_to] = new_translated_index;
+
+	return 1;
+}
 
 
 

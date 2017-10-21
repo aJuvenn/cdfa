@@ -119,7 +119,7 @@ void cdfa__print_automaton(const cdfa__automaton * const a)
 
 	printf("Transitions :\n\t      ");
 
-	for (j = 0 ; j < a->nb_considered_letters ; j++){
+	for (j = 0 ; j < a->transition_matrix_width ; j++){
 
 		i = 0;
 
@@ -136,7 +136,7 @@ void cdfa__print_automaton(const cdfa__automaton * const a)
 
 		printf("\t%u : { ",i);
 
-		for (j = 0 ; j < a->nb_considered_letters ; j++){
+		for (j = 0 ; j < a->transition_matrix_width ; j++){
 
 			if (a->transitions[i][j] == CDFA_WELL){
 				printf(". ");

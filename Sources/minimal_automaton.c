@@ -578,64 +578,111 @@ cdfa__automaton *cdfa__states_fusion_automaton(const cdfa__automaton * const a)
 
 
 
+cdfa__bool cdfa__are_equivalent_letters(cdfa__letter l_1, cdfa__letter l_2, const cdfa__automaton * const a)
+{
+	cdfa__automaton_state current_state;
+	cdfa__automaton_state next_state_1;
+	cdfa__automaton_state next_state_2;
 
-
-
-cdfa__automaton * cdfa__letter_fusion_automaton(const cdfa__automaton * const a){
-
-
-	unsigned int i;
-	unsigned int j;
-	unsigned int k;
-	cdfa__letter first_current_letter;
-	cdfa__letter second_current_letter;
-	cdfa__automaton_state first_next_state;
-	cdfa__automaton_state second_next_state;
-
-
-	cdfa__automaton *new_aut = NULL;
-
-	const unsigned int nb_considered_letters = cdfa__number_of_considered_letters(a);
-	const char *considered_letters = cdfa__considered_letter(a);
 	const unsigned int nb_states = cdfa__number_of_states(a);
 
-	cdfa__bool are_equivalent_letter[nb_considered_letters*(nb_considered_letters - 1)/2];
+
+	for (current_state = CDFA_WELL ; current_state < nb_states ; current_state++){
+
+		next_state_1 = cdfa__provide_next_state(l_1,current_state,a);
+		next_state_2 = cdfa__provide_next_state(l_2,current_state,a);
+
+		if (next_state_1 != next_state_2){
+			return CDFA_FALSE;
+		}
+	}
+
+	return CDFA_TRUE;
+}
+
+
+
+
+cdfa__automaton * cdfa__letter_fusion_automaton(const cdfa__automaton * const a)
+{
+
+	unsigned int i,j,k;
+	cdfa__letter current_letter;
+	cdfa__letter current_representative;
+	cdfa__automaton_state next_state;
+
+	const unsigned int nb_considered_letters = cdfa__number_of_considered_letters(a);
+	const cdfa__letter *considered_letters = cdfa__considered_letter(a);
+	const unsigned int nb_states = cdfa__number_of_states(a);
+
+	cdfa__bool has_a_representative;
+
+	unsigned int nb_representatives = 0;
+	cdfa__letter representatives[nb_considered_letters];
+
+	cdfa__letter representative_of[nb_considered_letters];
+
+	cdfa__automaton * new_aut = NULL;
+
 
 	for (i = 0 ; i < nb_considered_letters ; i++){
 
-		for (j = 0 ; j < i ; j++){
-			are_equivalent_letter[j + nb_considered_letters*i] = CDFA_TRUE;
+		current_letter = considered_letters[i];
+		has_a_representative = CDFA_FALSE;
+
+		for (j = 0 ; j < nb_representatives ; j++){
+
+			current_representative = representatives[j];
+
+			if (cdfa__are_equivalent_letters(current_letter,current_representative,a)){
+				representative_of[i] = current_representative;
+				has_a_representative = CDFA_TRUE;
+				break;
+			}
 		}
+
+		if (!has_a_representative){
+			representative_of[i] = current_letter;
+			representatives[nb_representatives++] = current_letter;
+		}
+	}
+
+	new_aut = cdfa__empty_automaton(nb_states,nb_representatives,representatives);
+
+	if (new_aut == NULL){
+		fprintf(stderr,"cdfa__letter_fusion_automaton : cdfa__empty_automaton returned NULL\n");
+		return NULL;
 	}
 
 	for (k = 0 ; k < nb_states ; k++){
 
-		for (i = 0 ; i < nb_considered_letters ; i++){
+		for (j = 0 ; j < nb_representatives ; j++){
 
-			first_current_letter = considered_letters[i];
-			first_next_state = cdfa__provide_next_state(first_current_letter,k,a);
+			current_representative = representatives[j];
+			next_state = cdfa__provide_next_state(current_representative,k,a);
+			cdfa__add_transition(k,current_representative,next_state,new_aut);
+		}
 
-			for (j = 0 ; j < i ; j++){
-
-				if (!are_equivalent_letter[j + nb_considered_letters*i]){
-					continue;
-				}
-
-				second_current_letter = considered_letters[j];
-				second_next_state = cdfa__provide_next_state(second_current_letter,k,a);
-
-				if (first_next_state != second_next_state){
-					are_equivalent_letter[j + nb_considered_letters*i] = CDFA_FALSE;
-				}
-			}
+		if (cdfa__is_a_final_state(k,a)){
+			cdfa__set_as_a_final_state(k,new_aut);
 		}
 	}
 
+	cdfa__set_as_the_starting_state(cdfa__starting_state(a),new_aut);
 
-	//TODO : representative and creation of the new automaton
+	for (i = 0 ; i < nb_considered_letters ; i++){
+
+		current_letter = considered_letters[i];
+		current_representative = representative_of[i];
+
+		if (current_letter != current_representative){
+			cdfa__give_same_meaning_as(current_letter,current_representative,new_aut);
+		}
+	}
 
 	return new_aut;
 }
+
 
 
 cdfa__automaton *cdfa__minimal_automaton(const cdfa__automaton * const a)
@@ -670,7 +717,17 @@ cdfa__automaton *cdfa__minimal_automaton(const cdfa__automaton * const a)
 
 	cdfa__free_automaton(new_aut_temp);
 
-	return new_aut;
+	new_aut_temp = cdfa__letter_fusion_automaton(new_aut);
+
+	if (new_aut_temp == NULL){
+		fprintf(stderr,"cdfa__minimal_automaton : cdfa__letter_fusion_automaton returned NULL\n");
+		cdfa__free_automaton(new_aut);
+		return NULL;
+	}
+
+	cdfa__free_automaton(new_aut);
+
+	return new_aut_temp;
 }
 
 

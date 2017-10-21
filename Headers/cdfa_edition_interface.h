@@ -23,6 +23,10 @@ int cdfa__add_transition(const cdfa__automaton_state src,
 						  const cdfa__automaton_state dst,
 						  cdfa__automaton * const a);
 
+int cdfa__give_same_meaning_as(const cdfa__letter letter_to_give_meaning_to,
+		const cdfa__letter considered_letter_with_meaning,
+		cdfa__automaton * const a);
+
 int cdfa__is_a_considered_letter(const cdfa__letter l, const cdfa__automaton * const a);
 
 unsigned int cdfa__number_of_considered_letters(const cdfa__automaton * const a);

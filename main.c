@@ -19,6 +19,42 @@ int cdfa__read_expression(const char **cursor,
 							char char_stack[]);
 
 
+//TODO : change get_token by shift_cursor ?
+
+
+
+#define CDFA_MAX_NB_AUTOMATON_STACK 500
+#define CDFA_MAX_NB_CHAR_STACK 10000
+/*
+cdfa__automaton *cdfa__expression_recognizing_automaton(const char expression[])
+{
+
+	unsigned int nb_automaton_stack = 0;
+	cdfa__automaton *automaton_stack[CDFA_MAX_NB_AUTOMATON_STACK];
+	char char_stack[CDFA_MAX_NB_CHAR_STACK];
+	int no_error;
+	const char *cursor = expression;
+
+	no_error = cdfa__read_expression(&cursor,&nb_automaton_stack,automaton_stack,char_stack);
+
+
+
+
+
+}
+
+
+int cdfa__declare_expression(const char name[], const char expression[]);
+
+*/
+
+
+
+
+
+
+
+
 
 int main(int argc, char **argv)
 {
@@ -28,6 +64,7 @@ int main(int argc, char **argv)
 	unsigned int nb_automaton_stack = 0;
 	const char *cursor = NULL;
 	int no_error;
+	cdfa__automaton *aut;
 
 	str[0] = 0;
 
@@ -45,6 +82,7 @@ int main(int argc, char **argv)
 		} else {
 			printf("Valid string : %u automatons in stack\n",nb_automaton_stack);
 			cdfa__print_automaton(*automaton_stack);
+			cdfa__free_automaton(*automaton_stack);
 		}
 	}
 
