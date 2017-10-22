@@ -74,3 +74,53 @@ cdfa__automaton *cdfa__word_recognizing_automaton(const char word[])
 
 
 
+
+
+
+
+
+cdfa__automaton *cdfa__letter_choice_automaton(const cdfa__letter char_stack[])
+{
+	cdfa__automaton *new_aut = NULL;
+	unsigned int size;
+	unsigned int i;
+	cdfa__letter first_known_letter;
+
+	size = 0;
+
+	while (char_stack[size] != 0){
+		size++;
+	}
+
+	if (size == 0){
+		fprintf(stderr,"cdfa__letter_choice_automaton : no letter into the stack\n");
+		return NULL;
+	}
+
+	new_aut = cdfa__empty_automaton(3,1,char_stack);
+
+	if (new_aut == NULL){
+		fprintf(stderr,"cdfa__letter_choice_automaton : cdfa__empty_automaton returned NULL\n");
+		return NULL;
+	}
+
+	first_known_letter = char_stack[0];
+	cdfa__add_transition(1,first_known_letter,2,new_aut);
+
+	for (i = 1 ; i < size ; i++){
+		cdfa__give_same_meaning_as(char_stack[i],first_known_letter,new_aut);
+	}
+
+	cdfa__set_as_the_starting_state(1,new_aut);
+	cdfa__set_as_a_final_state(2,new_aut);
+
+	cdfa__move_to_starting_state(new_aut);
+
+	return new_aut;
+}
+
+
+
+
+
+

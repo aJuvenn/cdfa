@@ -13,7 +13,7 @@
 
 
 
-int cdfa__read_expression(const char **cursor,
+int cdfa__build_from_expression(const char **cursor,
 							unsigned int *nb_automaton_stack,
 							cdfa__automaton *automaton_stack[],
 							char char_stack[]);
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 		printf("\nEnter string : ");
 		fgets(str,256,stdin);
 
-		no_error = cdfa__read_expression(&cursor,&nb_automaton_stack,automaton_stack,char_stack);
+		no_error = cdfa__build_from_expression(&cursor,&nb_automaton_stack,automaton_stack,char_stack);
 
 		if (!no_error){
 			printf("Invalid string\n");
