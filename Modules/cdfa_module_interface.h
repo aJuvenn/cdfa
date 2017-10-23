@@ -24,9 +24,9 @@ cdfa__automaton *cdfa__minimal_automaton(const cdfa__automaton * const a);
 
 cdfa__automaton *cdfa__language_concatenation_automaton(const cdfa__automaton * const a_1, const cdfa__automaton * const a_2);
 
-cdfa__automaton *cdfa__range_exponentiation_automaton(const unsigned int min_power, const unsigned int max_power, const cdfa__automaton * const a);
+cdfa__automaton *cdfa__language_range_exponentiation_automaton(const unsigned int min_power, const unsigned int max_power, const cdfa__automaton * const a);
 
-cdfa__automaton *cdfa__exponentiation_automaton(const unsigned int power, const cdfa__automaton * const a);
+cdfa__automaton *cdfa__language_exponentiation_automaton(const unsigned int power, const cdfa__automaton * const a);
 
 cdfa__automaton *cdfa__language_or_epsilon_automaton(const cdfa__automaton *a);
 
@@ -38,6 +38,7 @@ cdfa__automaton *cdfa__language_union_automaton(const cdfa__automaton * const a_
 
 cdfa__automaton *cdfa__language_intersection_automaton(const cdfa__automaton * const a_1, const cdfa__automaton * const a_2);
 
+cdfa__automaton *cdfa__language_exclusion_automaton(const cdfa__automaton * const a_1, const cdfa__automaton * const a_2);
 
 
 

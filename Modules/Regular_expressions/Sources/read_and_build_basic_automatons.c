@@ -153,7 +153,7 @@ int cdfa__build_from_unary_operator(const char **cursor,
 			return 0;
 		}
 
-		a = cdfa__range_exponentiation_automaton(min_power_value,max_power_value,top_automaton);
+		a = cdfa__language_range_exponentiation_automaton(min_power_value,max_power_value,top_automaton);
 		break;
 
 	default:
@@ -207,9 +207,9 @@ int cdfa__build_from_binary_operator(const char **cursor,
 			a = cdfa__language_intersection_automaton(top_automaton_bis,top_automaton);
 			break;
 
-		//case CDFA_MINUS:
-			//a = //TODO write minus automaton
-			//break;
+		case CDFA_MINUS:
+			a = cdfa__language_exclusion_automaton(top_automaton_bis,top_automaton);
+			break;
 
 		default:
 			//TODO error

@@ -37,7 +37,7 @@ cdfa__automaton *cdfa__language_or_epsilon_automaton(const cdfa__automaton *a)
 
 
 
-cdfa__automaton *cdfa__exponentiation_automaton(const unsigned int power, const cdfa__automaton * const a)
+cdfa__automaton *cdfa__language_exponentiation_automaton(const unsigned int power, const cdfa__automaton * const a)
 {
 	cdfa__automaton *b = NULL;
 	cdfa__automaton *c = NULL;
@@ -46,7 +46,7 @@ cdfa__automaton *cdfa__exponentiation_automaton(const unsigned int power, const 
 		return cdfa__word_recognizing_automaton("");
 	}
 
-	b = cdfa__exponentiation_automaton(power/2,a);
+	b = cdfa__language_exponentiation_automaton(power/2,a);
 
 	if (b == NULL){
 		fprintf(stderr,"cdfa__power_automaton : self call returned NULL\n");
@@ -84,9 +84,7 @@ cdfa__automaton *cdfa__exponentiation_automaton(const unsigned int power, const 
 
 
 
-
-
-cdfa__automaton *cdfa__range_exponentiation_automaton(const unsigned int min_power, const unsigned int max_power, const cdfa__automaton * const a)
+cdfa__automaton *cdfa__language_range_exponentiation_automaton(const unsigned int min_power, const unsigned int max_power, const cdfa__automaton * const a)
 {
 	cdfa__automaton *b = NULL;
 	cdfa__automaton *c = NULL;
@@ -97,7 +95,7 @@ cdfa__automaton *cdfa__range_exponentiation_automaton(const unsigned int min_pow
 		return NULL;
 	}
 
-	b = cdfa__exponentiation_automaton(min_power,a);
+	b = cdfa__language_exponentiation_automaton(min_power,a);
 
 	if (b == NULL){
 		fprintf(stderr,"cdfa__power_range_automaton : cdfa__power_automaton returned NULL\n");
@@ -140,7 +138,7 @@ cdfa__automaton *cdfa__range_exponentiation_automaton(const unsigned int min_pow
 		return NULL;
 	}
 
-	c = cdfa__exponentiation_automaton(max_power,b);
+	c = cdfa__language_exponentiation_automaton(max_power,b);
 
 	if (c == NULL){
 		fprintf(stderr,"cdfa__power_range_automaton : cdfa__power_automaton returned NULL\n");

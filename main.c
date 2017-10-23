@@ -9,12 +9,12 @@
 
 
 
+
 int main(int argc, char **argv)
 {
 	char str[2000];
-	cdfa__automaton *aut;
-
 	str[0] = 0;
+	cdfa__automaton *aut;
 
 	while (str[0] != 's'){
 
@@ -30,6 +30,8 @@ int main(int argc, char **argv)
 			cdfa__free_automaton(aut);
 		}
 	}
+
+
 
 	return 0;
 }

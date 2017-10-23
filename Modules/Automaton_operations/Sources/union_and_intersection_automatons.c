@@ -144,6 +144,34 @@ cdfa__automaton *cdfa__raw_language_intersection_automaton(const cdfa__automaton
 
 
 
+cdfa__automaton *cdfa__raw_language_exclusion_automaton(const cdfa__automaton * const a_1, const cdfa__automaton * const a_2)
+{
+	cdfa__automaton_state q_1;
+	cdfa__automaton_state q_2;
+	unsigned int nb_states_1 = cdfa__number_of_states(a_1);
+	unsigned int nb_states_2 = cdfa__number_of_states(a_2);
+	cdfa__automaton *new_aut = NULL;
+
+	new_aut = cdfa__product_automaton(a_1,a_2);
+
+	if (new_aut == NULL){
+		fprintf(stderr,"cdfa__raw_language_exclusion_automaton : cdfa__product_automaton returned NULL\n");
+		return NULL;
+	}
+
+	for (q_1 = 0 ; q_1 < nb_states_1 ; q_1++){
+
+		for (q_2 = 0 ; q_2 < nb_states_2 ; q_2++){
+
+			if (cdfa__is_a_final_state(q_1,a_1) && !cdfa__is_a_final_state(q_2,a_2)){
+				cdfa__set_as_a_final_state(q_1 + nb_states_1 * q_2,new_aut);
+			}
+		}
+	}
+
+	return new_aut;
+}
+
 
 
 
@@ -202,6 +230,32 @@ cdfa__automaton *cdfa__language_intersection_automaton(const cdfa__automaton * c
 }
 
 
+
+cdfa__automaton *cdfa__language_exclusion_automaton(const cdfa__automaton * const a_1, const cdfa__automaton * const a_2)
+{
+	cdfa__automaton *new_aut = NULL;
+	cdfa__automaton *temp_aut = NULL;
+
+
+	temp_aut = cdfa__raw_language_exclusion_automaton(a_1,a_2);
+
+	if (temp_aut == NULL){
+		fprintf(stderr,"cdfa__language_exclusion_automaton : cdfa__raw_language_intersection_automaton returned NULL\n");
+		return NULL;
+	}
+
+	new_aut = cdfa__minimal_automaton(temp_aut);
+
+	if (new_aut == NULL){
+		fprintf(stderr,"cdfa__language_exclusion_automaton : cdfa__minimal_automaton returned NULL\n");
+		cdfa__free_automaton(temp_aut);
+		return NULL;
+	}
+
+	cdfa__free_automaton(temp_aut);
+
+	return new_aut;
+}
 
 
 

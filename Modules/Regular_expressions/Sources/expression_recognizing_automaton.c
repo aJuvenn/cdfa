@@ -107,9 +107,9 @@ int cdfa__build_from_expression(const char **cursor,
 			break;
 
 
-		//case CDFA_MINUS: TODO minus automaton
 		case CDFA_AND:
 		case CDFA_OR:
+		case CDFA_MINUS:
 
 			no_error = cdfa__build_from_binary_operator(cursor,nb_automaton_stack,
 						automaton_stack,implicit_concatenation,&waiting_binary_operator);
