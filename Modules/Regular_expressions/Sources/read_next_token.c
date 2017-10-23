@@ -6,8 +6,8 @@
  */
 
 
-#include "../../Headers/cdfa_regular_expression.h"
 
+#include "../Headers/cdfa_regular_expression_intern.h"
 
 
 

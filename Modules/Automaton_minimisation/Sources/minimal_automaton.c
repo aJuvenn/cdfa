@@ -5,8 +5,7 @@
  *      Author: juven
  */
 
-#include "../../Headers/cdfa_edition_interface.h"
-
+#include "../Headers/cdfa_minimisation_intern.h"
 
 
 cdfa__automaton *cdfa__minimal_automaton(const cdfa__automaton * const a)

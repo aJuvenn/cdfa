@@ -6,8 +6,8 @@
  */
 
 
-#include "../Headers/cdfa_interface.h"
-#include "../Headers/dynamic_states_sets_arrays.h"
+#include "../Headers/cdfa_operation_intern.h"
+
 
 
 cdfa__dynamic_states_set_array *cdfa__new_dynamic_states_set_array(const unsigned int nb_states_in_an_element,

@@ -1,12 +1,12 @@
 /*
- * build_automatons_from_reading.c
+ * read_and_build_basic_automatons.c
  *
  *  Created on: 22 oct. 2017
  *      Author: juven
  */
 
 
-
+#include "../Headers/cdfa_regular_expression_intern.h"
 
 
 int cdfa__build_from_word(const char **cursor,
@@ -56,8 +56,6 @@ int cdfa__build_from_word(const char **cursor,
 	return 1;
 }
 
-
-#define MAX_NUMBER_DIGIT 10
 
 
 

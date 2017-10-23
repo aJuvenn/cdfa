@@ -1,5 +1,4 @@
-#include "../Headers/cdfa_interface.h"
-#include "../Headers/cdfa_edition_interface.h"
+#include "../../cdfa_edition_interface.h"
 
 
 cdfa__automaton *cdfa__word_recognizing_automaton(const char word[])
@@ -81,16 +80,13 @@ cdfa__automaton *cdfa__word_recognizing_automaton(const char word[])
 
 cdfa__automaton *cdfa__letter_choice_automaton(const cdfa__letter char_stack[])
 {
-	cdfa__automaton *new_aut = NULL;
-	unsigned int size;
+
 	unsigned int i;
 	cdfa__letter first_known_letter;
 
-	size = 0;
+	cdfa__automaton *new_aut = NULL;
+	const unsigned int size = strlen((char *) char_stack);
 
-	while (char_stack[size] != 0){
-		size++;
-	}
 
 	if (size == 0){
 		fprintf(stderr,"cdfa__letter_choice_automaton : no letter into the stack\n");

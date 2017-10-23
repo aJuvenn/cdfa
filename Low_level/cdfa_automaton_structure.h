@@ -1,17 +1,14 @@
 /*
- * automaton_structure.h
+ * cdfa_automaton_structure.h
  *
- *  Created on: 30 sept. 2017
+ *  Created on: 22 oct. 2017
  *      Author: juven
  */
 
-#ifndef AUTOMATON_STRUCTURE_H_
-#define AUTOMATON_STRUCTURE_H_
+#ifndef CDFA_AUTOMATON_STRUCTURE_H_
+#define CDFA_AUTOMATON_STRUCTURE_H_
 
-
-#include "cdfa_interface.h"
-
-
+#include "../cdfa_interface.h"
 
 struct cdfa__automaton {
 
@@ -30,8 +27,4 @@ struct cdfa__automaton {
 	cdfa__automaton_state **transitions;
 };
 
-
-#endif /* AUTOMATON_STRUCTURE_H_ */
-
-
-
+#endif /* CDFA_AUTOMATON_STRUCTURE_H_ */

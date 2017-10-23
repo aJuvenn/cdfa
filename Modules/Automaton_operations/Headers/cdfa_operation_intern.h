@@ -1,12 +1,15 @@
 /*
- * dynamic_states_sets_arrays.h
+ * cdfa_operation_intern.h
  *
- *  Created on: 13 oct. 2017
+ *  Created on: 22 oct. 2017
  *      Author: juven
  */
 
-#ifndef DYNAMIC_STATES_SETS_ARRAYS_H_
-#define DYNAMIC_STATES_SETS_ARRAYS_H_
+#ifndef CDFA_OPERATION_INTERN_H_
+#define CDFA_OPERATION_INTERN_H_
+
+#include "../../../cdfa_edition_interface.h"
+#include "../../cdfa_module_interface.h"
 
 #define CDFA_INVALID_INDEX ((unsigned int) -1)
 
@@ -47,4 +50,10 @@ int cdfa__add_in_array(cdfa__bool set[], cdfa__dynamic_states_set_array * const 
 cdfa__bool cdfa__is_in_array(const cdfa__bool set[], cdfa__dynamic_states_set_array * const array);
 
 
-#endif /* DYNAMIC_STATES_SETS_ARRAYS_H_ */
+
+
+unsigned int cdfa__union_of_the_letters_to_consider(cdfa__letter dest_letters[],
+											  	  	 const cdfa__automaton * const a_1,
+											  	  	 const cdfa__automaton * const a_2);
+
+#endif /* CDFA_OPERATION_INTERN_H_ */

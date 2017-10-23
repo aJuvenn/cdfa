@@ -6,7 +6,7 @@
  */
 
 
-#include "../../Headers/cdfa_edition_interface.h"
+#include "../Headers/cdfa_minimisation_intern.h"
 
 
 cdfa__automaton *cdfa__accessible_states_automaton(const cdfa__automaton * const a)

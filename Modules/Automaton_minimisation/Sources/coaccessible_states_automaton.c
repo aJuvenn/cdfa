@@ -6,7 +6,7 @@
  *      Author: juven
  */
 
-#include "../../Headers/cdfa_edition_interface.h"
+#include "../Headers/cdfa_minimisation_intern.h"
 
 
 unsigned int **cdfa__new_matrix(const unsigned int height, const unsigned int width){

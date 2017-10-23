@@ -5,9 +5,9 @@
  *      Author: juven
  */
 
-#include "../../Headers/cdfa_edition_interface.h"
-#include "../../Headers/dynamic_states_sets_arrays.h"
-#include "../../Headers/intern_functions.h"
+
+#include "../Headers/cdfa_operation_intern.h"
+
 
 cdfa__dynamic_states_set_array *cdfa__language_concatenation_new_states(const cdfa__automaton * const a_1, const cdfa__automaton * const a_2)
 {

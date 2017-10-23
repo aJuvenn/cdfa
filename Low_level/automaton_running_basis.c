@@ -5,7 +5,7 @@
  *      Author: juven
  */
 
-#include "../../Headers/automaton_structure.h"
+#include "cdfa_automaton_structure.h"
 
 
 

@@ -6,7 +6,7 @@
  */
 
 
-#include "../../Headers/cdfa_edition_interface.h"
+#include "../Headers/cdfa_minimisation_intern.h"
 
 
 

@@ -5,8 +5,8 @@
  *      Author: juven
  */
 
-#include "../Headers/cdfa_edition_interface.h"
-#include "../Headers/intern_functions.h"
+
+#include "../Headers/cdfa_operation_intern.h"
 
 
 
