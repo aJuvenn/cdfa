@@ -19,9 +19,9 @@ struct cdfa__automaton {
 	int *is_a_final_state;
 
 	unsigned int nb_considered_letters;
-	cdfa__letter considered_letters[CDFA_NB_LETTER];
+	cdfa__letter considered_letters[CDFA__NB_LETTER];
 
-	unsigned int char_translation_table[CDFA_NB_LETTER];
+	unsigned int char_translation_table[CDFA__NB_LETTER];
 
 	unsigned int transition_matrix_width;
 	cdfa__automaton_state **transitions;

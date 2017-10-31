@@ -24,8 +24,8 @@ int cdfa__build_from_expression(const char **cursor,
 	cdfa__automaton * top_automaton = NULL;
 	cdfa__automaton * top_automaton_bis = NULL;
 
-	implicit_concatenation = CDFA_FALSE;
-	exit_reading = CDFA_FALSE;
+	implicit_concatenation = CDFA__FALSE;
+	exit_reading = CDFA__FALSE;
 	waiting_binary_operator = CDFA_INVALID_TOKEN;
 
 
@@ -43,7 +43,7 @@ int cdfa__build_from_expression(const char **cursor,
 				return  0;
 			}
 
-			implicit_concatenation = CDFA_TRUE;
+			implicit_concatenation = CDFA__TRUE;
 			break;
 
 
@@ -55,7 +55,7 @@ int cdfa__build_from_expression(const char **cursor,
 				return  0;
 			}
 
-			implicit_concatenation = CDFA_TRUE;
+			implicit_concatenation = CDFA__TRUE;
 			break;
 
 
@@ -88,7 +88,7 @@ int cdfa__build_from_expression(const char **cursor,
 
 			}
 
-			implicit_concatenation = CDFA_TRUE;
+			implicit_concatenation = CDFA__TRUE;
 			break;
 
 
@@ -103,7 +103,7 @@ int cdfa__build_from_expression(const char **cursor,
 				return  0;
 			}
 
-			implicit_concatenation = CDFA_TRUE;
+			implicit_concatenation = CDFA__TRUE;
 			break;
 
 
@@ -118,7 +118,7 @@ int cdfa__build_from_expression(const char **cursor,
 				return  0;
 			}
 
-			implicit_concatenation = CDFA_FALSE;
+			implicit_concatenation = CDFA__FALSE;
 			break;
 
 
@@ -132,7 +132,7 @@ int cdfa__build_from_expression(const char **cursor,
 				return  0;
 			}
 
-			exit_reading = CDFA_TRUE;
+			exit_reading = CDFA__TRUE;
 			break;
 
 		default:
@@ -154,7 +154,7 @@ cdfa__automaton *cdfa__expression_recognizing_automaton(const char * const expre
 	unsigned int nb_automaton_stack = 0;
 	cdfa__automaton * automaton_stack[expression_length];
 
-	char char_stack[(expression_length > CDFA_NB_LETTER)? expression_length : CDFA_NB_LETTER];
+	char char_stack[(expression_length > CDFA__NB_LETTER)? expression_length : CDFA__NB_LETTER];
 
 	int no_error;
 	unsigned int i;

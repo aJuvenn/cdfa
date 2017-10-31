@@ -9,26 +9,16 @@
 #include "../Headers/cdfa_operation_intern.h"
 
 
-cdfa__automaton *cdfa__language_or_epsilon_automaton(const cdfa__automaton *a)
+cdfa__automaton *cdfa__language_or_epsilon_automaton(const cdfa__automaton * const a)
 {
 
-	cdfa__automaton *b = NULL;
-	cdfa__automaton *c = NULL;
+	cdfa__automaton *b;
+	cdfa__automaton *c;
+
 
 	b = cdfa__word_recognizing_automaton("");
 
-	if (b == NULL){
-		fprintf(stderr,"cdfa__language_or_epsilon_automaton : cdfa__word_recognizing_automaton returned NULL\n");
-		return NULL;
-	}
-
 	c = cdfa__language_union_automaton(a,b);
-
-	if (c == NULL){
-		fprintf(stderr,"cdfa__language_or_epsilon_automaton : cdfa__raw_language_union_automaton returned NULL\n");
-		cdfa__free_automaton(b);
-		return NULL;
-	}
 
 	cdfa__free_automaton(b);
 
@@ -131,12 +121,6 @@ cdfa__automaton *cdfa__language_range_exponentiation_automaton(const unsigned in
 	}
 
 	b = cdfa__language_or_epsilon_automaton(a);
-
-	if (b == NULL){
-		fprintf(stderr,"cdfa__power_range_automaton : cdfa__language_or_epsilon_automaton returned NULL\n");
-		cdfa__free_automaton(d);
-		return NULL;
-	}
 
 	c = cdfa__language_exponentiation_automaton(max_power,b);
 

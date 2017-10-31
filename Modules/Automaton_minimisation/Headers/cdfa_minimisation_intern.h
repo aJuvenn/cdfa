@@ -11,6 +11,20 @@
 #include "../../../cdfa_edition_interface.h"
 
 
+unsigned int **cdfa__new_matrix(const unsigned int height, const unsigned int width);
+
+void cdfa__free_matrix(unsigned int **m);
+
+cdfa__automaton_state ***cdfa__new_state_triple_matrix(const unsigned int height,
+												  const unsigned int width,
+												  const unsigned int depth);
+
+
+void cdfa__free_state_triple_matrix(cdfa__automaton_state ***m);
+
+void cdfa__free_matrix(unsigned int **m);
+
+
 
 cdfa__automaton *cdfa__accessible_states_automaton(const cdfa__automaton * const a);
 

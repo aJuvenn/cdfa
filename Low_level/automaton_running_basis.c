@@ -29,10 +29,10 @@ cdfa__automaton_state cdfa__current_state(const cdfa__automaton * const a)
 
 cdfa__automaton_state cdfa__provide_next_state(const cdfa__letter l, const cdfa__automaton_state q, const cdfa__automaton * const a)
 {
-	const unsigned int char_index = a->char_translation_table[l];
+	const unsigned int char_index = a->char_translation_table[(unsigned char) l];
 
-	if (char_index == CDFA_UNKNOWN_CHAR || q >= a->nb_states){
-		return CDFA_WELL;
+	if (char_index == CDFA__UNKNOWN_CHAR || q >= a->nb_states){
+		return CDFA__WELL;
 	}
 
 	return a->transitions[q][char_index];
@@ -55,9 +55,9 @@ int cdfa__is_a_final_state(const cdfa__automaton_state q, const cdfa__automaton 
 }
 
 
-void cdfa__move_to_starting_state(cdfa__automaton * const a)
+cdfa__automaton_state cdfa__move_to_starting_state(cdfa__automaton * const a)
 {
-	a->current_state = a->starting_state;
+	return a->current_state = a->starting_state;
 }
 
 
@@ -105,8 +105,8 @@ void cdfa__print_automaton(const cdfa__automaton * const a)
 	printf("Number of considered letters : %u\n",a->nb_considered_letters);
 	printf("Considered letters : \n\t{ ");
 
-	for (i = 0 ; i < CDFA_NB_LETTER ; i++){
-		if (a->char_translation_table[i] != CDFA_UNKNOWN_CHAR){
+	for (i = 0 ; i < CDFA__NB_LETTER ; i++){
+		if (a->char_translation_table[i] != CDFA__UNKNOWN_CHAR){
 			nb_considered_char++;
 			printf("%c(%u) ",(char) i,a->char_translation_table[i]);
 		}
@@ -138,7 +138,7 @@ void cdfa__print_automaton(const cdfa__automaton * const a)
 
 		for (j = 0 ; j < a->transition_matrix_width ; j++){
 
-			if (a->transitions[i][j] == CDFA_WELL){
+			if (a->transitions[i][j] == CDFA__WELL){
 				printf(". ");
 			} else {
 				printf("%u ",a->transitions[i][j]);

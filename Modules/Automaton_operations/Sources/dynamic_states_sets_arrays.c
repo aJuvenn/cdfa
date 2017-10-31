@@ -15,24 +15,14 @@ cdfa__dynamic_states_set_array *cdfa__new_dynamic_states_set_array(const unsigne
 {
 	cdfa__dynamic_states_set_array *new_array = NULL;
 
-	new_array = malloc(sizeof(cdfa__dynamic_states_set_array));
 
-	if (new_array == NULL){
-		fprintf(stderr,"cdfa__new_dynamic_states_set_array : malloc returned NULL\n");
-		return NULL;
-	}
+	CDFA__MALLOC(new_array,sizeof(cdfa__dynamic_states_set_array));
 
 	new_array->nb_states_per_element = nb_states_in_an_element;
 	new_array->nb_states_sets = 0;
 	new_array->maximum_nb_states_sets = initial_max_nb_elements;
 
-	new_array->states_sets = malloc(initial_max_nb_elements*sizeof(cdfa__bool*));
-
-	if (new_array->states_sets == NULL){
-		fprintf(stderr,"cdfa__new_dynamic_states_set_array : malloc returned NULL\n");
-		free(new_array);
-		return NULL;
-	}
+	CDFA__MALLOC(new_array->states_sets,initial_max_nb_elements*sizeof(cdfa__bool*))
 
 	return new_array;
 }
@@ -50,20 +40,20 @@ void cdfa__free_dynamic_states_set_array(cdfa__dynamic_states_set_array *array)
 }
 
 
-int cdfa__extend_dynamic_array(cdfa__dynamic_states_set_array * const array)
+void cdfa__extend_dynamic_array(cdfa__dynamic_states_set_array * const array)
 {
-	unsigned int new_maximum_size = 2*array->maximum_nb_states_sets;
+	unsigned int new_maximum_size = 1 + 2*array->maximum_nb_states_sets;
 	cdfa__bool **new_data = realloc(array->states_sets,new_maximum_size*sizeof(cdfa__bool *));
 
 	if (new_data == 0){
-		fprintf(stderr,"cdfa__extend_dynamic_array : realloc returned NULL\n");
-		return 0;
+		fprintf(stderr,"CDFA FATAL ERROR : realloc returned NULL.\n");
+		fflush(stderr);
+		exit(1);
 	}
 
 	array->maximum_nb_states_sets = new_maximum_size;
 	array->states_sets = new_data;
 
-	return 1;
 }
 
 
@@ -74,22 +64,13 @@ cdfa__bool cdfa__is_the_array_empty(const cdfa__dynamic_states_set_array * const
 }
 
 
-int cdfa__add_in_array_if_not_already_in(cdfa__bool set[], cdfa__dynamic_states_set_array * const array)
+void cdfa__add_in_array_if_not_already_in(cdfa__bool set[], cdfa__dynamic_states_set_array * const array)
 {
-	int success_value;
 
-	if (cdfa__is_in_array(set,array)){
-		return 1;
+	if (!cdfa__is_in_array(set,array)){
+		cdfa__add_in_array(set,array);
 	}
 
-	success_value = cdfa__add_in_array(set,array);
-
-	if (!success_value){
-		fprintf(stderr,"cdfa__add_in_array_if_not_already_in : cdfa__add_in_array returned 0\n");
-		return 0;
-	}
-
-	return 1;
 }
 
 
@@ -132,11 +113,11 @@ cdfa__bool cdfa__are_equal_states_set(const unsigned int set_size, const cdfa__b
 
 	for (i = 0 ; i < set_size ; i++){
 		if (set_1[i] != set_2[i]){
-			return CDFA_FALSE;
+			return CDFA__FALSE;
 		}
 	}
 
-	return CDFA_TRUE;
+	return CDFA__TRUE;
 }
 
 
@@ -145,7 +126,7 @@ void cdfa__empty_the_states_set(const unsigned int set_size, cdfa__bool state_se
 	unsigned int i;
 
 	for (i = 0 ; i < set_size ; i++){
-		state_set[i] = CDFA_FALSE;
+		state_set[i] = CDFA__FALSE;
 	}
 }
 
@@ -153,15 +134,13 @@ void cdfa__empty_the_states_set(const unsigned int set_size, cdfa__bool state_se
 cdfa__bool *cdfa__new_empty_states_set(const unsigned int set_size)
 {
 	unsigned int i;
-	cdfa__bool *new_set = malloc(set_size*sizeof(cdfa__bool));
+	cdfa__bool *new_set;
 
-	if (new_set == NULL){
-		fprintf(stderr,"cdfa__new_empty_states_set : malloc returned NULL\n");
-		return NULL;
-	}
+
+	CDFA__MALLOC(new_set,set_size*sizeof(cdfa__bool))
 
 	for (i = 0 ; i < set_size ; i++){
-		new_set[i] = CDFA_FALSE;
+		new_set[i] = CDFA__FALSE;
 	}
 
 	return new_set;
@@ -170,24 +149,18 @@ cdfa__bool *cdfa__new_empty_states_set(const unsigned int set_size)
 
 
 
-int cdfa__add_in_array(cdfa__bool set[], cdfa__dynamic_states_set_array * const array)
+void cdfa__add_in_array(cdfa__bool set[], cdfa__dynamic_states_set_array * const array)
 {
-	int success_value;
 
 	if (array->nb_states_sets == array->maximum_nb_states_sets){
-
-		success_value = cdfa__extend_dynamic_array(array);
-
-		if (!success_value || array->maximum_nb_states_sets <= array->nb_states_sets){
-			fprintf(stderr,"cdfa__add_in_array : cdfa__extend_dynamic_array returned 0 or did not extend the array\n");
-			return 0;
-		}
+		cdfa__extend_dynamic_array(array);
 	}
 
 	array->states_sets[array->nb_states_sets++] = set;
 
-	return 1;
 }
+
+
 
 cdfa__bool cdfa__is_in_array(const cdfa__bool set[], cdfa__dynamic_states_set_array * const array)
 {
@@ -196,11 +169,11 @@ cdfa__bool cdfa__is_in_array(const cdfa__bool set[], cdfa__dynamic_states_set_ar
 	for (i = 0 ; i < array->nb_states_sets ; i++){
 
 		if (cdfa__are_equal_states_set(array->nb_states_per_element,set,array->states_sets[i])){
-			return CDFA_TRUE;
+			return CDFA__TRUE;
 		}
 	}
 
-	return CDFA_FALSE;
+	return CDFA__FALSE;
 }
 
 

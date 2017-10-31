@@ -7,32 +7,19 @@ cdfa__automaton *cdfa__word_recognizing_automaton(const char word[])
 	unsigned int i,j;
 	int is_considered;
 	unsigned int nb_considered_letters = 0;
-	unsigned int word_size;
+	unsigned int word_size = (word == NULL) ? 0 : strlen(word);
+	cdfa__letter considered_letters[word_size];
 	cdfa__automaton *a = NULL;
 
 
 	if (word == NULL){
 
 		a = cdfa__empty_automaton(1,0,NULL);
-
-		if (a == NULL){
-			fprintf(stderr,"cdfa__word_recognizing_automaton : cdfa__empty_automaton returned NULL\n");
-			return NULL;
-		}
-
-		cdfa__set_as_the_starting_state(CDFA_WELL,a);
+		cdfa__set_as_the_starting_state(CDFA__WELL,a);
 		cdfa__move_to_starting_state(a);
 
 		return a;
 	}
-
-	word_size = 0;
-
-	while (word[word_size] != 0){
-		word_size++;
-	}
-
-	cdfa__letter considered_letters[word_size];
 
 	for (i = 0 ; i < word_size ; i++){
 
@@ -53,11 +40,6 @@ cdfa__automaton *cdfa__word_recognizing_automaton(const char word[])
 	}
 
 	a = cdfa__empty_automaton(word_size + 2, nb_considered_letters, considered_letters);
-
-	if (a == NULL){
-		fprintf(stderr,"cdfa__word_recognizing_automaton : cdfa__empty_automaton returned NULL\n");
-		return NULL;
-	}
 
 	for (i = 0 ; i < word_size ; i++){
 		cdfa__add_transition(i+1,(cdfa__letter) word[i],i+2,a);
@@ -94,11 +76,6 @@ cdfa__automaton *cdfa__letter_choice_automaton(const cdfa__letter char_stack[])
 	}
 
 	new_aut = cdfa__empty_automaton(3,1,char_stack);
-
-	if (new_aut == NULL){
-		fprintf(stderr,"cdfa__letter_choice_automaton : cdfa__empty_automaton returned NULL\n");
-		return NULL;
-	}
 
 	first_known_letter = char_stack[0];
 	cdfa__add_transition(1,first_known_letter,2,new_aut);

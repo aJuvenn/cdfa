@@ -15,7 +15,7 @@
  */
 
 
-cdfa__automaton_state **new_transition_matrix(const unsigned int nb_state, const unsigned int nb_letter){
+cdfa__automaton_state **cdfa__new_transition_matrix(const unsigned int nb_state, const unsigned int nb_letter){
 
 	cdfa__automaton_state *state_array = NULL ;
 	cdfa__automaton_state **transition_matrix = NULL ;
@@ -26,20 +26,8 @@ cdfa__automaton_state **new_transition_matrix(const unsigned int nb_state, const
 		return NULL;
 	}
 
-	state_array = malloc(nb_state*nb_letter*sizeof(cdfa__automaton_state));
-
-	if (state_array == NULL){
-		fprintf(stderr,"new_transition_matrix : malloc returned NULL\n");
-		return NULL ;
-	}
-
-	transition_matrix = malloc(nb_state*sizeof(cdfa__automaton_state *));
-
-	if (transition_matrix == NULL){
-		fprintf(stderr,"new_transition_matrix : malloc returned NULL\n");
-		free(state_array);
-		return NULL ;
-	}
+	CDFA__MALLOC(state_array,nb_state*nb_letter*sizeof(cdfa__automaton_state));
+	CDFA__MALLOC(transition_matrix,nb_state*sizeof(cdfa__automaton_state *));
 
 	for (i = 0 ; i < nb_state ; i++){
 		transition_matrix[i] = state_array + i*nb_letter ;
@@ -47,7 +35,7 @@ cdfa__automaton_state **new_transition_matrix(const unsigned int nb_state, const
 
 	for (i = 0 ; i < nb_state ; i++){
 		for (j = 0 ; j < nb_letter ; j++){
-			transition_matrix[i][j] = CDFA_WELL ;
+			transition_matrix[i][j] = CDFA__WELL ;
 		}
 	}
 
@@ -63,60 +51,37 @@ cdfa__automaton *cdfa__empty_automaton(const unsigned int nb_states,
 										 const cdfa__letter considered_letters[])
 {
 	unsigned int i;
+	unsigned int actual_nb_states;
 	cdfa__automaton *a = NULL ;
 
-	if (nb_states == 0){
-		fprintf(stderr,"cdfa__empty_automaton : automaton with no state is not authorized\n");
-		return NULL;
-	}
 
-	a = malloc(sizeof(cdfa__automaton));
-
-	if (a == NULL){
-		fprintf(stderr,"cdfa__empty_automaton : malloc returned NULL\n");
-		return NULL;
-	}
-
+	actual_nb_states = nb_states + (nb_states == 0);
+	CDFA__MALLOC(a,sizeof(cdfa__automaton))
 	a->transitions = NULL;
 	a->is_a_final_state = NULL;
-
-
 	a->nb_considered_letters = nb_considered_letters;
 	memcpy(a->considered_letters, considered_letters, nb_considered_letters*sizeof(cdfa__letter));
 
-	for (i = 0 ; i < CDFA_NB_LETTER ; i++){
-		a->char_translation_table[i] = CDFA_UNKNOWN_CHAR;
+	for (i = 0 ; i < CDFA__NB_LETTER ; i++){
+		a->char_translation_table[i] = CDFA__UNKNOWN_CHAR;
 	}
 
 	for (i = 0 ; i < nb_considered_letters ; i++){
-		a->char_translation_table[(unsigned int) considered_letters[i]] = i;
+		a->char_translation_table[(unsigned char) considered_letters[i]] = i;
 	}
 
-
-	a->nb_states = nb_states;
-	a->current_state = CDFA_WELL;
-	a->starting_state = CDFA_WELL;
+	a->nb_states = actual_nb_states;
+	a->current_state = CDFA__WELL;
+	a->starting_state = CDFA__WELL;
 	a->transition_matrix_width = nb_considered_letters;
-	a->is_a_final_state = malloc(nb_states*sizeof(int));
 
-	if (a->is_a_final_state == NULL){
-		fprintf(stderr,"cdfa__empty_automaton : malloc returned NULL\n");
-		cdfa__free_automaton(a);
-		return NULL;
-	}
+	CDFA__MALLOC(a->is_a_final_state,actual_nb_states*sizeof(int))
 
-	for (i = 0 ; i < nb_states ; i++){
+	for (i = 0 ; i < actual_nb_states ; i++){
 		a->is_a_final_state[i] = 0;
 	}
 
-
-	a->transitions = new_transition_matrix(nb_states,nb_considered_letters);
-
-	if (a->transitions == NULL && nb_considered_letters != 0){
-		fprintf(stderr,"cdfa__empty_automaton : malloc returned NULL\n");
-		cdfa__free_automaton(a);
-		return NULL;
-	}
+	a->transitions = cdfa__new_transition_matrix(actual_nb_states,nb_considered_letters);
 
 	return a;
 }
@@ -149,7 +114,7 @@ int cdfa__set_as_a_final_state(const cdfa__automaton_state q, cdfa__automaton * 
 		return 0;
 	}
 
-	a->is_a_final_state[(unsigned int) q] = 1;
+	a->is_a_final_state[q] = 1;
 
 	return 1;
 }
@@ -161,9 +126,9 @@ int cdfa__add_transition(const cdfa__automaton_state src,
 						  const cdfa__automaton_state dst,
 						  cdfa__automaton * const a)
 {
-	unsigned int translated_index = a->char_translation_table[l];
+	unsigned int translated_index = a->char_translation_table[(unsigned char) l];
 
-	if (translated_index == CDFA_UNKNOWN_CHAR){
+	if (translated_index == CDFA__UNKNOWN_CHAR){
 		fprintf(stderr,"cdfa__add_transition :  unknown given letter \"%c\"\n",(char) l);
 		return 0;
 	}
@@ -173,7 +138,7 @@ int cdfa__add_transition(const cdfa__automaton_state src,
 		return 0;
 	}
 
-	a->transitions[(unsigned int) src][translated_index] = dst;
+	a->transitions[src][translated_index] = dst;
 
 	return 1;
 }
@@ -186,20 +151,20 @@ int cdfa__give_same_meaning_as(const cdfa__letter letter_to_give_meaning_to,
 
 	unsigned int new_translated_index;
 
-	new_translated_index = a->char_translation_table[(unsigned int) considered_letter_with_meaning];
+	new_translated_index = a->char_translation_table[(unsigned char) considered_letter_with_meaning];
 
-	if (new_translated_index == CDFA_UNKNOWN_CHAR){
+	if (new_translated_index == CDFA__UNKNOWN_CHAR){
 		fprintf(stderr,"cdfa__give_same_meaning_as : provided considered letter is not\n");
 		return 0;
 	}
 
-	if (a->char_translation_table[(unsigned int) letter_to_give_meaning_to] != CDFA_UNKNOWN_CHAR){
+	if (a->char_translation_table[(unsigned char) letter_to_give_meaning_to] != CDFA__UNKNOWN_CHAR){
 		fprintf(stderr,"cdfa__give_same_meaning_as : provided unknown letter is not\n");
 		return 0;
 	}
 
 	a->considered_letters[a->nb_considered_letters++] = letter_to_give_meaning_to;
-	a->char_translation_table[(unsigned int) letter_to_give_meaning_to] = new_translated_index;
+	a->char_translation_table[(unsigned char) letter_to_give_meaning_to] = new_translated_index;
 
 	return 1;
 }
@@ -211,7 +176,7 @@ int cdfa__give_same_meaning_as(const cdfa__letter letter_to_give_meaning_to,
 
 int cdfa__is_a_considered_letter(const cdfa__letter l, const cdfa__automaton * const a)
 {
-	return a->char_translation_table[(unsigned int) l] != CDFA_UNKNOWN_CHAR;
+	return a->char_translation_table[(unsigned char) l] != CDFA__UNKNOWN_CHAR;
 }
 
 

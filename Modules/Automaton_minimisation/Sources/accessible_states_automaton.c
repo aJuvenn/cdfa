@@ -34,16 +34,16 @@ cdfa__automaton *cdfa__accessible_states_automaton(const cdfa__automaton * const
 
 	for (i = 0 ; i < initial_nb_states ; i++){
 		is_a_state_to_keep[i] = 0;
-		new_state_value[i] = CDFA_INVALID_STATE;
+		new_state_value[i] = CDFA__INVALID_STATE;
 	}
 
-	is_a_state_to_keep[CDFA_WELL] = 1;
-	new_state_value[CDFA_WELL] = (cdfa__automaton_state) nb_states_to_keep;
-	states_to_keep[nb_states_to_keep++] = CDFA_WELL;
+	is_a_state_to_keep[CDFA__WELL] = 1;
+	new_state_value[CDFA__WELL] = (cdfa__automaton_state) nb_states_to_keep;
+	states_to_keep[nb_states_to_keep++] = CDFA__WELL;
 
 	working_state = cdfa__starting_state(a);
 
-	if (working_state != CDFA_WELL){
+	if (working_state != CDFA__WELL){
 		is_a_state_to_keep[working_state] = 1;
 		new_state_value[working_state] = (cdfa__automaton_state) nb_states_to_keep;
 		states_to_keep[nb_states_to_keep++] = working_state;
@@ -70,11 +70,6 @@ cdfa__automaton *cdfa__accessible_states_automaton(const cdfa__automaton * const
 	}
 
 	new_aut = cdfa__empty_automaton(nb_states_to_keep,nb_considered_letters,considered_letters);
-
-	if (new_aut == NULL){
-		fprintf(stderr,"cdfa__accessible_states_automaton : cdfa__empty_automaton returned NULL\n");
-		return NULL;
-	}
 
 	working_state = cdfa__starting_state(a);
 	cdfa__set_as_the_starting_state(new_state_value[working_state],new_aut);

@@ -9,128 +9,8 @@
 #include "../Headers/cdfa_minimisation_intern.h"
 
 
-unsigned int **cdfa__new_matrix(const unsigned int height, const unsigned int width){
 
-	unsigned *array = NULL ;
-	unsigned **matrix = NULL ;
-	unsigned int i ;
-
-	if (height == 0 || width == 0){
-		return NULL;
-	}
-
-	array = malloc(width*height*sizeof(unsigned int));
-
-	if (array == NULL){
-		fprintf(stderr,"new_matrix : malloc returned NULL\n");
-		return NULL ;
-	}
-
-	matrix = malloc(height*sizeof(unsigned int *));
-
-	if (matrix == NULL){
-		fprintf(stderr,"new_matrix : malloc returned NULL\n");
-		free(array);
-		return NULL ;
-	}
-
-	for (i = 0 ; i < height ; i++){
-		matrix[i] = array + i*width ;
-	}
-
-
-	return matrix;
-}
-
-
-
-cdfa__automaton_state ***cdfa__new_state_triple_matrix(const unsigned int height,
-												  const unsigned int width,
-												  const unsigned int depth){
-
-	unsigned int i;
-	cdfa__automaton_state *array = NULL;
-	cdfa__automaton_state **width_array = NULL;
-	cdfa__automaton_state ***new_matrix = NULL;
-
-	if (height == 0 || width == 0 || depth == 0){
-		return NULL;
-	}
-
-	array = malloc(height*width*depth*sizeof(cdfa__automaton_state));
-
-	if (array == NULL){
-		fprintf(stderr,"new_state_triple_matrix : malloc returned NULL\n");
-		return NULL ;
-	}
-
-	width_array = malloc(height*width*sizeof(cdfa__automaton_state *));
-
-	if (width_array == NULL){
-		fprintf(stderr,"new_state_triple_matrix : malloc returned NULL\n");
-		free(array);
-		return NULL ;
-	}
-
-	for (i = 0 ; i < width*height ; i++){
-		width_array[i] = array + i*depth;
-	}
-
-	new_matrix = malloc(height*sizeof(cdfa__automaton_state**));
-
-	if (new_matrix == NULL){
-		fprintf(stderr,"new_state_triple_matrix : malloc returned NULL\n");
-		free(array);
-		free(width_array);
-		return NULL ;
-	}
-
-	for (i = 0 ; i < height ; i++){
-		new_matrix[i] = width_array + width*i;
-	}
-
-	return new_matrix;
-}
-
-
-void cdfa__free_state_triple_matrix(cdfa__automaton_state ***m)
-{
-	if (m == NULL){
-		return;
-	}
-
-	if (m[0] == NULL){
-		free(m);
-		return;
-	}
-
-	if (m[0][0] == NULL){
-		free(m[0]);
-		free(m);
-		return;
-	}
-
-	free(m[0][0]);
-	free(m[0]);
-	free(m);
-
-}
-
-
-void cdfa__free_matrix(unsigned int **m)
-{
-	if (m != NULL){
-
-		if (m[0] != NULL){
-			free(m[0]);
-		}
-
-		free(m);
-	}
-}
-
-
-int cdfa__coaccessible_states_and_usefull_letters(int is_a_coaccessible_state[],
+void cdfa__coaccessible_states_and_usefull_letters(int is_a_coaccessible_state[],
 												   int is_a_usefull_letter[],
 												   const cdfa__automaton * const a)
 {
@@ -153,26 +33,13 @@ int cdfa__coaccessible_states_and_usefull_letters(int is_a_coaccessible_state[],
 
 	nb_previous_states = cdfa__new_matrix(nb_initial_states,nb_initial_considered_letters);
 
-	if (nb_previous_states == NULL && nb_initial_considered_letters != 0){
-		fprintf(stderr,"cdfa__coaccessible_states_and_usefull_letters : cdfa__new_matrix returned NULL\n");
-		return 0;
-	}
-
 	for (i = 0 ; i < nb_initial_states ; i++){
 		for (j = 0 ; j < nb_initial_considered_letters ; j++){
 			nb_previous_states[i][j] = 0;
 		}
 	}
 
-
 	previous_states = cdfa__new_state_triple_matrix(nb_initial_states,nb_initial_considered_letters,nb_initial_states);
-
-	if (previous_states == NULL && nb_initial_considered_letters != 0){
-		fprintf(stderr,"cdfa__coaccessible_states_and_usefull_letters : cdfa__new_state_triple_matrix returned NULL\n");
-		cdfa__free_matrix(nb_previous_states);
-		return 0;
-	}
-
 
 	for (j = 0 ; j < nb_initial_considered_letters ; j++){
 
@@ -225,7 +92,6 @@ int cdfa__coaccessible_states_and_usefull_letters(int is_a_coaccessible_state[],
 	cdfa__free_matrix(nb_previous_states);
 	cdfa__free_state_triple_matrix(previous_states);
 
-	return 1;
 }
 
 
@@ -257,22 +123,17 @@ cdfa__automaton *cdfa__coaccessible_states_automaton(const cdfa__automaton * con
 	cdfa__automaton *new_aut = NULL;
 
 
-	if (cdfa__coaccessible_states_and_usefull_letters(is_a_coaccessible_state,is_a_usefull_letter,a) == 0){
-		fprintf(stderr,"cdfa__coaccessible_states_automaton : cdfa__coaccessible_states_and_usefull_letters returned 0\n");
-		return NULL;
-	}
-
+	cdfa__coaccessible_states_and_usefull_letters(is_a_coaccessible_state,is_a_usefull_letter,a);
 
 	for (i = 0 ; i < nb_initial_states ; i++){
 
-		if (is_a_coaccessible_state[i] || i == CDFA_WELL){
+		if (is_a_coaccessible_state[i] || i == CDFA__WELL){
 			new_states_traduction_table[i] = nb_states_to_keep++;
 		}
 		else {
-			new_states_traduction_table[i] = CDFA_INVALID_STATE;
+			new_states_traduction_table[i] = CDFA__INVALID_STATE;
 		}
 	}
-
 
 	for (i = 0 ; i < nb_initial_considered_letters ; i++){
 
@@ -281,14 +142,7 @@ cdfa__automaton *cdfa__coaccessible_states_automaton(const cdfa__automaton * con
 		}
 	}
 
-
 	new_aut = cdfa__empty_automaton(nb_states_to_keep,nb_letters_to_keep,letters_to_keep);
-
-	if (new_aut == NULL){
-		fprintf(stderr,"cdfa__coaccessible_states_automaton : cdfa__empty_automaton returned NULL\n");
-		return NULL;
-	}
-
 
 	for (i = 0 ; i < nb_initial_states ; i++){
 
@@ -314,13 +168,12 @@ cdfa__automaton *cdfa__coaccessible_states_automaton(const cdfa__automaton * con
 		}
 	}
 
-
 	i = cdfa__starting_state(a);
 
 	if (is_a_coaccessible_state[i]){
 		cdfa__set_as_the_starting_state(new_states_traduction_table[i],new_aut);
 	} else {
-		cdfa__set_as_the_starting_state(CDFA_WELL,new_aut);
+		cdfa__set_as_the_starting_state(CDFA__WELL,new_aut);
 	}
 
 	cdfa__move_to_starting_state(new_aut);

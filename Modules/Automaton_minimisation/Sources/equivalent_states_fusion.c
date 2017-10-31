@@ -23,12 +23,6 @@ unsigned int **cdfa__equivalent_states_matrix(const cdfa__automaton * const a)
 	unsigned int **are_equivalent = cdfa__new_matrix(nb_initial_states,nb_initial_states);
 
 
-	if (are_equivalent == NULL){
-		fprintf(stderr,"cdfa__equivalent_states_matrix : cdfa__new_matrix returned NULL\n");
-		return NULL;
-	}
-
-
 	for (i = 0 ; i < nb_initial_states ; i++){
 
 		is_a_final_state = cdfa__is_a_final_state(i,a);
@@ -40,7 +34,7 @@ unsigned int **cdfa__equivalent_states_matrix(const cdfa__automaton * const a)
 
 	do {
 
-		set_is_reducing = CDFA_FALSE;
+		set_is_reducing = CDFA__FALSE;
 
 		for (i = 0 ; i < nb_initial_states ; i++){
 
@@ -55,9 +49,9 @@ unsigned int **cdfa__equivalent_states_matrix(const cdfa__automaton * const a)
 						j_next_state = cdfa__provide_next_state(current_letter,j,a);
 
 						if (!are_equivalent[i_next_state][j_next_state]){
-							are_equivalent[i][j] = CDFA_FALSE;
-							are_equivalent[j][i] = CDFA_FALSE;
-							set_is_reducing  = CDFA_TRUE;
+							are_equivalent[i][j] = CDFA__FALSE;
+							are_equivalent[j][i] = CDFA__FALSE;
+							set_is_reducing  = CDFA__TRUE;
 							break;
 						}
 					}
@@ -94,11 +88,6 @@ cdfa__automaton *cdfa__states_fusion_automaton(const cdfa__automaton * const a)
 
 	are_equivalent = cdfa__equivalent_states_matrix(a);
 
-	if (are_equivalent == NULL){
-		fprintf(stderr,"cdfa__states_fusion_automaton : cdfa__equivalent_states_matrix returned NULL\n");
-		return NULL;
-	}
-
 	for (i = 0 ; i < nb_initial_states ; i++){
 
 		has_a_representative = 0;
@@ -120,13 +109,6 @@ cdfa__automaton *cdfa__states_fusion_automaton(const cdfa__automaton * const a)
 	}
 
 	new_aut = cdfa__empty_automaton(nb_representatives,nb_considered_letters,considered_letters);
-
-	if (new_aut == NULL){
-		fprintf(stderr,"cdfa__empty_automaton : cdfa__equivalent_states_matrix returned NULL\n");
-		cdfa__free_matrix(are_equivalent);
-		return NULL;
-	}
-
 
 	for (i = 0 ; i < nb_initial_states ; i++){
 

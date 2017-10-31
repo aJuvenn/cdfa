@@ -1,5 +1,5 @@
 /*
- * read_and_build_basic_automatons.c
+ * build_basic_automatons.c
  *
  *  Created on: 22 oct. 2017
  *      Author: juven

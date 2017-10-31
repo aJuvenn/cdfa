@@ -28,11 +28,11 @@ cdfa__dynamic_states_set_array *cdfa__new_dynamic_states_set_array(const unsigne
 
 void cdfa__free_dynamic_states_set_array(cdfa__dynamic_states_set_array *array);
 
-int cdfa__extend_dynamic_array(cdfa__dynamic_states_set_array * const array);
+void cdfa__extend_dynamic_array(cdfa__dynamic_states_set_array * const array);
 
 cdfa__bool cdfa__is_the_array_empty(const cdfa__dynamic_states_set_array * const array);
 
-int cdfa__add_in_array_if_not_already_in(cdfa__bool set[], cdfa__dynamic_states_set_array * const array);
+void cdfa__add_in_array_if_not_already_in(cdfa__bool set[], cdfa__dynamic_states_set_array * const array);
 
 cdfa__bool *cdfa__remove_last_element_from_array(cdfa__dynamic_states_set_array * const array);
 
@@ -45,7 +45,7 @@ void cdfa__empty_the_states_set(const unsigned int set_size, cdfa__bool state_se
 
 cdfa__bool *cdfa__new_empty_states_set(const unsigned int set_size);
 
-int cdfa__add_in_array(cdfa__bool set[], cdfa__dynamic_states_set_array * const array);
+void cdfa__add_in_array(cdfa__bool set[], cdfa__dynamic_states_set_array * const array);
 
 cdfa__bool cdfa__is_in_array(const cdfa__bool set[], cdfa__dynamic_states_set_array * const array);
 

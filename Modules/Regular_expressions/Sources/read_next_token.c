@@ -20,11 +20,11 @@ cdfa__bool cdfa__is_a_space(const char c)
 	for (i = 0 ; i < 6 ; i++){
 
 		if (c == spaces[i]){
-			return CDFA_TRUE;
+			return CDFA__TRUE;
 		}
 	}
 
-	return CDFA_FALSE;
+	return CDFA__FALSE;
 }
 
 
