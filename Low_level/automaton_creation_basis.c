@@ -56,7 +56,7 @@ cdfa__automaton *cdfa__empty_automaton(const unsigned int nb_states,
 
 
 	actual_nb_states = nb_states + (nb_states == 0);
-	CDFA__MALLOC(a,sizeof(cdfa__automaton))
+	CDFA__MALLOC(a,sizeof(cdfa__automaton));
 	a->transitions = NULL;
 	a->is_a_final_state = NULL;
 	a->nb_considered_letters = nb_considered_letters;
@@ -75,7 +75,7 @@ cdfa__automaton *cdfa__empty_automaton(const unsigned int nb_states,
 	a->starting_state = CDFA__WELL;
 	a->transition_matrix_width = nb_considered_letters;
 
-	CDFA__MALLOC(a->is_a_final_state,actual_nb_states*sizeof(int))
+	CDFA__MALLOC(a->is_a_final_state,actual_nb_states*sizeof(int));
 
 	for (i = 0 ; i < actual_nb_states ; i++){
 		a->is_a_final_state[i] = 0;

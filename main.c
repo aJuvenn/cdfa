@@ -53,7 +53,9 @@ int main(int argc, char **argv)
 
 		if (aut == NULL){
 			printf("Invalid string\n");
+
 		} else {
+
 			cdfa__print_automaton(aut);
 
 			while (1){
@@ -74,7 +76,6 @@ int main(int argc, char **argv)
 					printf("\t Not recognized\n\n");
 				}
 			}
-
 
 			cdfa__free_automaton(aut);
 		}

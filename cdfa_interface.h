@@ -28,16 +28,18 @@ struct cdfa__automaton;
 typedef struct cdfa__automaton cdfa__automaton;
 
 #define CDFA__MALLOC(ptr,size) \
-	if ((size) == 0){ \
-		ptr = NULL; \
-	} else { \
-		ptr = malloc(size); \
-		if (ptr == NULL){ \
-			fprintf(stderr,"CDFA FATAL ERROR : malloc returned NULL for a size of %u bytes.\n",(unsigned int) (size)); \
-			fflush(stderr); \
-			exit(1); \
-		} \
-	} \
+		do {\
+			if ((size) == 0){ \
+				ptr = NULL; \
+			} else { \
+				ptr = malloc(size); \
+				if (ptr == NULL){ \
+					fprintf(stderr,"CDFA FATAL ERROR : malloc returned NULL for a size of %u bytes.\n",(unsigned int) (size)); \
+					fflush(stderr); \
+					exit(1); \
+				} \
+			} \
+		} while(0)\
 
 
 

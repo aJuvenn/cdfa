@@ -22,7 +22,7 @@ cdfa__dynamic_states_set_array *cdfa__new_dynamic_states_set_array(const unsigne
 	new_array->nb_states_sets = 0;
 	new_array->maximum_nb_states_sets = initial_max_nb_elements;
 
-	CDFA__MALLOC(new_array->states_sets,initial_max_nb_elements*sizeof(cdfa__bool*))
+	CDFA__MALLOC(new_array->states_sets,initial_max_nb_elements*sizeof(cdfa__bool*));
 
 	return new_array;
 }
@@ -137,7 +137,7 @@ cdfa__bool *cdfa__new_empty_states_set(const unsigned int set_size)
 	cdfa__bool *new_set;
 
 
-	CDFA__MALLOC(new_set,set_size*sizeof(cdfa__bool))
+	CDFA__MALLOC(new_set,set_size*sizeof(cdfa__bool));
 
 	for (i = 0 ; i < set_size ; i++){
 		new_set[i] = CDFA__FALSE;

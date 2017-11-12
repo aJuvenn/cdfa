@@ -20,8 +20,8 @@ unsigned int **cdfa__new_matrix(const unsigned int height, const unsigned int wi
 		return NULL;
 	}
 
-	CDFA__MALLOC(array,width*height*sizeof(unsigned int))
-	CDFA__MALLOC(matrix,height*sizeof(unsigned int *))
+	CDFA__MALLOC(array,width*height*sizeof(unsigned int));
+	CDFA__MALLOC(matrix,height*sizeof(unsigned int *));
 
 	for (i = 0 ; i < height ; i++){
 		matrix[i] = array + i*width ;
@@ -46,14 +46,14 @@ cdfa__automaton_state ***cdfa__new_state_triple_matrix(const unsigned int height
 		return NULL;
 	}
 
-	CDFA__MALLOC(array,height*width*depth*sizeof(cdfa__automaton_state))
-	CDFA__MALLOC(width_array,height*width*sizeof(cdfa__automaton_state *))
+	CDFA__MALLOC(array,height*width*depth*sizeof(cdfa__automaton_state));
+	CDFA__MALLOC(width_array,height*width*sizeof(cdfa__automaton_state *));
 
 	for (i = 0 ; i < width*height ; i++){
 		width_array[i] = array + i*depth;
 	}
 
-	CDFA__MALLOC(new_matrix,height*sizeof(cdfa__automaton_state**))
+	CDFA__MALLOC(new_matrix,height*sizeof(cdfa__automaton_state**));
 
 	for (i = 0 ; i < height ; i++){
 		new_matrix[i] = width_array + width*i;
