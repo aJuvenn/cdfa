@@ -6,7 +6,7 @@
  *      Author: juven
  */
 
-#include "../../../src/Automaton_minimisation/Headers/cdfa_minimisation_intern.h"
+#include "cdfa_minimisation_intern.h"
 
 
 

@@ -6,7 +6,7 @@
  */
 
 
-#include "../../../src/Automaton_operations/Headers/cdfa_operation_intern.h"
+#include "cdfa_operation_intern.h"
 
 
 cdfa__dynamic_states_set_array *cdfa__kleen_plus_new_states(const cdfa__automaton * const a)

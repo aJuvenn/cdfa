@@ -6,7 +6,7 @@
  */
 
 
-#include "../../../src/Automaton_operations/Headers/cdfa_operation_intern.h"
+#include "cdfa_operation_intern.h"
 
 
 cdfa__automaton *cdfa__language_or_epsilon_automaton(const cdfa__automaton * const a)

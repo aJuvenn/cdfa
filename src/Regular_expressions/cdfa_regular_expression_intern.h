@@ -8,7 +8,7 @@
 #ifndef CDFA_REGULAR_EXPRESSION_INTERN_H_
 #define CDFA_REGULAR_EXPRESSION_INTERN_H_
 
-#include "../../../src/cdfa_edition_interface.h"
+#include "../cdfa_edition_interface.h"
 
 
 #define MAX_NUMBER_DIGIT 9

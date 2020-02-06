@@ -6,7 +6,7 @@
  */
 
 
-#include "../../../src/Automaton_operations/Headers/cdfa_operation_intern.h"
+#include "cdfa_operation_intern.h"
 
 
 cdfa__dynamic_states_set_array *cdfa__language_concatenation_new_states(const cdfa__automaton * const a_1, const cdfa__automaton * const a_2)

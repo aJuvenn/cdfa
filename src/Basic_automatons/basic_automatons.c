@@ -1,4 +1,4 @@
-#include "../../src/cdfa_edition_interface.h"
+#include "../cdfa_edition_interface.h"
 
 
 cdfa__automaton *cdfa__word_recognizing_automaton(const char word[])

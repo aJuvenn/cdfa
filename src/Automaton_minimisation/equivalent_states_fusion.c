@@ -5,7 +5,7 @@
  *      Author: juven
  */
 
-#include "../../../src/Automaton_minimisation/Headers/cdfa_minimisation_intern.h"
+#include "cdfa_minimisation_intern.h"
 
 
 unsigned int **cdfa__equivalent_states_matrix(const cdfa__automaton * const a)

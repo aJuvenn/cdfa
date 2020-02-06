@@ -6,7 +6,7 @@
  */
 
 
-#include "../../../src/Automaton_operations/Headers/cdfa_operation_intern.h"
+#include "cdfa_operation_intern.h"
 
 
 

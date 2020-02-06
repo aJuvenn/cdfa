@@ -8,7 +8,7 @@
 #ifndef CDFA_OPERATION_INTERN_H_
 #define CDFA_OPERATION_INTERN_H_
 
-#include "../../../src/cdfa_edition_interface.h"
+#include "../cdfa_edition_interface.h"
 
 
 #define CDFA_INVALID_INDEX ((unsigned int) -1)

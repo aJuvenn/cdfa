@@ -8,7 +8,7 @@
 #ifndef CDFA_MINIMISATION_INTERN_H_
 #define CDFA_MINIMISATION_INTERN_H_
 
-#include "../../../src/cdfa_edition_interface.h"
+#include "../cdfa_edition_interface.h"
 
 
 unsigned int **cdfa__new_matrix(const unsigned int height, const unsigned int width);
