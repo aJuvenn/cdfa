@@ -114,5 +114,4 @@ void cdfa__print_automaton(const cdfa__automaton * const a);
 void cdfa__free_automaton(cdfa__automaton * const a);
 
 
-
 #endif /* CDFA_H_ */

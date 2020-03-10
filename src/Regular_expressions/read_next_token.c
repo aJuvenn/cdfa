@@ -11,23 +11,6 @@
 
 
 
-cdfa__bool cdfa__is_a_space(const char c)
-{
-
-	const char spaces[] = {' ','\n','\t','\v','\r','\f'};
-	unsigned int i;
-
-	for (i = 0 ; i < 6 ; i++){
-
-		if (c == spaces[i]){
-			return CDFA__TRUE;
-		}
-	}
-
-	return CDFA__FALSE;
-}
-
-
 
 
 #define CDFA_RETURN_TOKEN_IF_MATCH(token_type,c) \
@@ -46,7 +29,7 @@ cdfa__token cdfa__get_next_token_and_shift_cursor(const char ** cursor)
 
 	tok.character = **cursor;
 
-	while (cdfa__is_a_space(tok.character)){
+	while (isspace(tok.character)){
 		(*cursor)++;
 		tok.character = **cursor;
 	}
@@ -72,6 +55,7 @@ cdfa__token cdfa__get_next_token_and_shift_cursor(const char ** cursor)
 		CDFA_RETURN_TOKEN_IF_MATCH(CDFA_AND,'&');
 		CDFA_RETURN_TOKEN_IF_MATCH(CDFA_COMA,',');
 		CDFA_RETURN_TOKEN_IF_MATCH(CDFA_QUESTION_MARK,'?');
+		CDFA_RETURN_TOKEN_IF_MATCH(CDFA_DOT, '.');
 
 	case '\\':
 
@@ -126,6 +110,7 @@ cdfa__token cdfa__get_next_token_and_shift_cursor(const char ** cursor)
 		case '?':
 		case '\\':
 		case ' ':
+		case '.':
 			tok.type = CDFA_LETTER;
 			return tok;
 

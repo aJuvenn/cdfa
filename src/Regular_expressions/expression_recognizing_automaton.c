@@ -48,6 +48,7 @@ int cdfa__build_from_expression(const char **cursor,
 
 
 		case CDFA_LEFT_SQUARE_BRACKET:
+		case CDFA_DOT:
 
 			no_error = cdfa__build_from_letter_choice(cursor,nb_automaton_stack,automaton_stack,char_stack,implicit_concatenation);
 

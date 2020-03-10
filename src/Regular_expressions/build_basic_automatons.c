@@ -72,18 +72,21 @@ int cdfa__build_from_letter_choice(const char **cursor,
 
 	unsigned int nb_char_stack;
 
-	cdfa__get_next_token_and_shift_cursor(cursor);
+	cdfa__token next_token = cdfa__get_next_token_and_shift_cursor(cursor);
 
-	nb_char_stack = cdfa__read_letter_choice_expression(cursor,char_stack);
+	if (next_token.type == CDFA_DOT){
+		a = cdfa__any_letter_automaton();
 
-	if (nb_char_stack == 0){
-		return 0;
+	} else {
+		nb_char_stack = cdfa__read_letter_choice_expression(cursor,char_stack);
+
+		if (nb_char_stack == 0){
+			return 0;
+		}
+		a = cdfa__letter_choice_automaton((cdfa__letter *) char_stack);
 	}
 
-	a = cdfa__letter_choice_automaton((cdfa__letter *) char_stack);
-
 	//TODO error if retuns NULL (no need to free)
-
 
 	if (implicit_concatenation){
 

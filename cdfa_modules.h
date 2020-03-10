@@ -44,7 +44,10 @@ cdfa__automaton *cdfa__word_recognizing_automaton(const char word[]);
 cdfa__automaton *cdfa__letter_choice_automaton(const char char_stack[]);
 
 
-
+/*
+ * Creates an automaton recognizing any (non-zero) letter
+ */
+cdfa__automaton *cdfa__any_letter_automaton();
 
 
 /***********************************************************

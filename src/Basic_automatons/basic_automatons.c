@@ -95,5 +95,20 @@ cdfa__automaton *cdfa__letter_choice_automaton(const cdfa__letter char_stack[])
 
 
 
+cdfa__automaton *cdfa__any_letter_automaton()
+{
+	static int all_letters_are_initialized = 0;
+	static cdfa__letter all_letters[256];
+
+	if (!all_letters_are_initialized){
+		for (unsigned i = 0 ; i < 256 ; i++){
+			all_letters[i] = (cdfa__letter) ((i+1) % 256);
+		}
+		all_letters_are_initialized = 1;
+	}
+
+	return cdfa__letter_choice_automaton(all_letters);
+}
+
 
 

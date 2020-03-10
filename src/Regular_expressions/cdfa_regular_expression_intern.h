@@ -30,7 +30,8 @@ enum cdfa__token_type {
 	CDFA_OR,
 	CDFA_AND,
 	CDFA_COMA,
-	CDFA_QUESTION_MARK
+	CDFA_QUESTION_MARK,
+	CDFA_DOT
 };
 
 struct cdfa__token {
