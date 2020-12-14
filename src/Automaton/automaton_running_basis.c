@@ -9,25 +9,25 @@
 
 
 
-unsigned int cdfa__number_of_states(const cdfa__automaton * const a)
+unsigned int cdfa__get_number_of_states(const cdfa__automaton * const a)
 {
 	return a->nb_states;
 }
 
 
-cdfa__automaton_state cdfa__starting_state(const cdfa__automaton * const a)
+cdfa__automaton_state cdfa__get_starting_state(const cdfa__automaton * const a)
 {
 	return a->starting_state;
 }
 
 
-cdfa__automaton_state cdfa__current_state(const cdfa__automaton * const a)
+cdfa__automaton_state cdfa__get_current_state(const cdfa__automaton * const a)
 {
 	return a->current_state;
 }
 
 
-cdfa__automaton_state cdfa__next_state(const cdfa__letter l, const cdfa__automaton_state q, const cdfa__automaton * const a)
+cdfa__automaton_state cdfa__get_next_state(const cdfa__letter l, const cdfa__automaton_state q, const cdfa__automaton * const a)
 {
 	const unsigned int char_index = a->char_translation_table[(unsigned char) l];
 
@@ -41,7 +41,7 @@ cdfa__automaton_state cdfa__next_state(const cdfa__letter l, const cdfa__automat
 
 cdfa__automaton_state cdfa__move_to_next_state(const cdfa__letter l, cdfa__automaton * const a)
 {
-	return a->current_state = cdfa__next_state(l,a->current_state,a);
+	return a->current_state = cdfa__get_next_state(l,a->current_state,a);
 }
 
 
@@ -53,6 +53,13 @@ int cdfa__is_a_final_state(const cdfa__automaton_state q, const cdfa__automaton 
 
 	return a->is_a_final_state[q];
 }
+
+
+int cdfa__is_the_current_state_final(const cdfa__automaton * const a)
+{
+	return (a->is_a_final_state[a->current_state]);
+}
+
 
 
 cdfa__automaton_state cdfa__move_to_starting_state(cdfa__automaton * const a)
@@ -73,8 +80,7 @@ int cdfa__move_to_state(const cdfa__automaton_state q, cdfa__automaton * const a
 }
 
 
-
-cdfa__automaton_state cdfa__state_after_reading(const char word[], cdfa__automaton * const a)
+cdfa__automaton_state cdfa__get_state_after_reading(const char word[], const cdfa__automaton * const a)
 {
 	const cdfa__letter *ptr;
 	cdfa__automaton_state current_state;
@@ -87,7 +93,7 @@ cdfa__automaton_state cdfa__state_after_reading(const char word[], cdfa__automat
 			return CDFA__WELL;
 		}
 
-		current_state = cdfa__next_state(*ptr, current_state, a);
+		current_state = cdfa__get_next_state(*ptr, current_state, a);
 	}
 
 	return current_state;
@@ -97,7 +103,7 @@ cdfa__automaton_state cdfa__state_after_reading(const char word[], cdfa__automat
 
 cdfa__automaton_state cdfa__move_to_state_after_reading(const char word[], cdfa__automaton * const a)
 {
-	return a->current_state = cdfa__state_after_reading(word, a);
+	return a->current_state = cdfa__get_state_after_reading(word, a);
 }
 
 

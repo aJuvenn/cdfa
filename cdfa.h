@@ -1,9 +1,3 @@
-/*
- * cdfa.h
- *
- *  Created on: 13 oct. 2017
- *      Author: ajuvenn
- */
 
 #ifndef CDFA_H_
 #define CDFA_H_
@@ -34,30 +28,45 @@ typedef unsigned int cdfa__automaton_state;
 
 
 
+
+/***********************************************************
+ * 					ALLOCATION
+ ***********************************************************/
+
 /*
  * Returns the smallest automaton recognizing the language
  * described by the given regular expression.
+ * Returned pointer must be freed using cdfa__free_automaton()
  */
 cdfa__automaton * cdfa__expression_recognizing_automaton(const char * const regexp);
 
 
 /*
- * Reads the word from automaton's initial state and returns if its last state
- * is final. Automaton state remains the last state after the function returns.
+ * Frees dynamically allocated automaton
  */
-int cdfa__is_the_word_recognized(const char word[], cdfa__automaton * const a);
+void cdfa__free_automaton(cdfa__automaton * const a);
+
+
+/***********************************************************
+ * 					DISPLAY
+ ***********************************************************/
+
+/*
+ * Displays automaton state transition matrix
+ */
+void cdfa__print_automaton(const cdfa__automaton * const a);
+
+
+/***********************************************************
+ * 					GETTERS
+ ***********************************************************/
 
 
 /*
- * Returns the state the automaton would be after reading the whole word
+ * Returns the state the automaton would be after reading the whole
+ * word starting from the current automaton state.
  */
-cdfa__automaton_state cdfa__state_after_reading(const char word[], cdfa__automaton * const a);
-
-
-/*
- * Reads the whole word and returns the current automaton state after this
- */
-cdfa__automaton_state cdfa__move_to_state_after_reading(const char word[], cdfa__automaton * const a);
+cdfa__automaton_state cdfa__get_state_after_reading(const char word[], const cdfa__automaton * const a);
 
 
 /*
@@ -67,27 +76,43 @@ int cdfa__is_a_final_state(const cdfa__automaton_state q, const cdfa__automaton 
 
 
 /*
- * Returns 1 if the current state is final, 0 otherwise
+ * Returns the number of states the automaton has
  */
-cdfa__automaton_state cdfa__current_state(const cdfa__automaton * const a);
+unsigned int cdfa__get_number_of_states(const cdfa__automaton * const a);
 
+
+/*
+ * Returns the current automaton state
+ */
+cdfa__automaton_state cdfa__get_current_state(const cdfa__automaton * const a);
+
+
+/*
+ * Returns 1 if the current automaton state is final, 0 otherwise
+ */
+int cdfa__is_the_current_state_final(const cdfa__automaton * const a);
 
 /*
  * Returns automaton starting state
  */
-cdfa__automaton_state cdfa__starting_state(const cdfa__automaton * const a);
-
-
-/*
- * Resets automaton current state to starting one
- */
-cdfa__automaton_state cdfa__move_to_starting_state(cdfa__automaton * const a);
+cdfa__automaton_state cdfa__get_starting_state(const cdfa__automaton * const a);
 
 
 /*
  * Returns the state the automaton would be after reading the letter l from state q
  */
-cdfa__automaton_state cdfa__next_state(const char l, const cdfa__automaton_state q, const cdfa__automaton * const a);
+cdfa__automaton_state cdfa__get_next_state(const char l, const cdfa__automaton_state q, const cdfa__automaton * const a);
+
+
+/***********************************************************
+ * 					SETTERS
+ ***********************************************************/
+
+
+/*
+ * Resets automaton current state to starting one and returns it
+ */
+cdfa__automaton_state cdfa__move_to_starting_state(cdfa__automaton * const a);
 
 
 /*
@@ -102,16 +127,24 @@ cdfa__automaton_state cdfa__move_to_next_state(const char l, cdfa__automaton * c
 int cdfa__move_to_state(const cdfa__automaton_state q, cdfa__automaton * const a);
 
 
-/*
- * Displays automaton state transition matrix
- */
-void cdfa__print_automaton(const cdfa__automaton * const a);
+/***********************************************************
+ * 					WHOLE WORD READING
+ ***********************************************************/
 
 
 /*
- * Frees dynamically allocated automaton
+ * Moves to automaton starting state, then modify its state by
+ * reading the word and returns if this last state is final.
+ * Automaton state remains the last state after the function returns.
  */
-void cdfa__free_automaton(cdfa__automaton * const a);
+int cdfa__is_the_word_recognized(const char word[], cdfa__automaton * const a);
+
+
+/*
+ * Reads the whole word and returns the current automaton state after this
+ */
+cdfa__automaton_state cdfa__move_to_state_after_reading(const char word[], cdfa__automaton * const a);
+
 
 
 #endif /* CDFA_H_ */

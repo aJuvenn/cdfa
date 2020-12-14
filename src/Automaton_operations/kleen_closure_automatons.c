@@ -16,10 +16,10 @@ cdfa__dynamic_states_set_array *cdfa__kleen_plus_new_states(const cdfa__automato
 	cdfa__letter current_letter;
 	cdfa__automaton_state next_state;
 
-	const unsigned int nb_initial_states = cdfa__number_of_states(a);
+	const unsigned int nb_initial_states = cdfa__get_number_of_states(a);
 	const unsigned int nb_considered_letters = cdfa__number_of_considered_letters(a);
 	const cdfa__letter * const considered_letters = cdfa__considered_letter(a);
-	const cdfa__automaton_state initial_starting_state = cdfa__starting_state(a);
+	const cdfa__automaton_state initial_starting_state = cdfa__get_starting_state(a);
 
 	cdfa__dynamic_states_set_array *treated_states_sets = NULL;
 	cdfa__dynamic_states_set_array *states_sets_to_treat = NULL;
@@ -51,7 +51,7 @@ cdfa__dynamic_states_set_array *cdfa__kleen_plus_new_states(const cdfa__automato
 
 				if (current_states_set[j]){
 
-					next_state = cdfa__next_state(current_letter,j,a);
+					next_state = cdfa__get_next_state(current_letter,j,a);
 					next_states_set[next_state] = CDFA__TRUE;
 
 					if (cdfa__is_a_final_state(next_state,a)){
@@ -90,10 +90,10 @@ cdfa__automaton *cdfa__raw_kleen_plus_automaton(const cdfa__automaton * const a)
 	cdfa__letter current_letter;
 	cdfa__automaton_state next_state;
 
-	const unsigned int nb_initial_states = cdfa__number_of_states(a);
+	const unsigned int nb_initial_states = cdfa__get_number_of_states(a);
 	const unsigned int nb_considered_letters = cdfa__number_of_considered_letters(a);
 	const cdfa__letter * const considered_letters = cdfa__considered_letter(a);
-	const cdfa__automaton_state initial_starting_state = cdfa__starting_state(a);
+	const cdfa__automaton_state initial_starting_state = cdfa__get_starting_state(a);
 
 	cdfa__automaton * new_aut = NULL;
 	cdfa__dynamic_states_set_array *new_states_array = NULL;
@@ -122,7 +122,7 @@ cdfa__automaton *cdfa__raw_kleen_plus_automaton(const cdfa__automaton * const a)
 			for (k = 0 ; k < nb_initial_states ; k++){
 
 				if (current_states_set[k]){
-					next_state = cdfa__next_state(current_letter,k,a);
+					next_state = cdfa__get_next_state(current_letter,k,a);
 					next_states_set[next_state] = CDFA__TRUE;
 
 					if (cdfa__is_a_final_state(next_state,a)){
@@ -199,7 +199,7 @@ cdfa__automaton *cdfa__kleen_star_automaton(const cdfa__automaton * const a)
 		return NULL;
 	}
 
-	if (cdfa__is_a_final_state(cdfa__starting_state(a),a)){
+	if (cdfa__is_a_final_state(cdfa__get_starting_state(a),a)){
 		return temp_aut_1;
 	}
 

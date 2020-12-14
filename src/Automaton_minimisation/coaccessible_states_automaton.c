@@ -18,7 +18,7 @@ void cdfa__coaccessible_states_and_usefull_letters(int is_a_coaccessible_state[]
 	cdfa__automaton_state current_state, next_state, current_previous_state;
 	cdfa__letter current_letter;
 
-	unsigned int nb_initial_states = cdfa__number_of_states(a);
+	unsigned int nb_initial_states = cdfa__get_number_of_states(a);
 
 	unsigned int nb_initial_considered_letters = cdfa__number_of_considered_letters(a);
 	const cdfa__letter * const initial_considered_letters = cdfa__considered_letter(a);
@@ -47,7 +47,7 @@ void cdfa__coaccessible_states_and_usefull_letters(int is_a_coaccessible_state[]
 
 		for (i = 0 ; i < nb_initial_states ; i++){
 
-			next_state = cdfa__next_state(current_letter,i,a);
+			next_state = cdfa__get_next_state(current_letter,i,a);
 			previous_states[next_state][j][nb_previous_states[next_state][j]++] = i;
 		}
 	}
@@ -107,7 +107,7 @@ cdfa__automaton *cdfa__coaccessible_states_automaton(const cdfa__automaton * con
 	cdfa__letter current_letter;
 	cdfa__automaton_state next_state, new_current_state, new_next_state;
 
-	unsigned int nb_initial_states = cdfa__number_of_states(a);
+	unsigned int nb_initial_states = cdfa__get_number_of_states(a);
 	unsigned int nb_initial_considered_letters = cdfa__number_of_considered_letters(a);
 	const cdfa__letter * const initial_considered_letters = cdfa__considered_letter(a);
 
@@ -153,7 +153,7 @@ cdfa__automaton *cdfa__coaccessible_states_automaton(const cdfa__automaton * con
 			for (j = 0 ; j < nb_letters_to_keep ; j++){
 
 				current_letter = letters_to_keep[j];
-				next_state = cdfa__next_state(current_letter,i,a);
+				next_state = cdfa__get_next_state(current_letter,i,a);
 
 				if (is_a_coaccessible_state[next_state]){
 					new_next_state = new_states_traduction_table[next_state];
@@ -168,7 +168,7 @@ cdfa__automaton *cdfa__coaccessible_states_automaton(const cdfa__automaton * con
 		}
 	}
 
-	i = cdfa__starting_state(a);
+	i = cdfa__get_starting_state(a);
 
 	if (is_a_coaccessible_state[i]){
 		cdfa__set_as_the_starting_state(new_states_traduction_table[i],new_aut);

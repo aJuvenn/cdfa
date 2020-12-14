@@ -13,7 +13,7 @@ cdfa__automaton *cdfa__accessible_states_automaton(const cdfa__automaton * const
 {
 	unsigned int i;
 	unsigned int j;
-	unsigned int initial_nb_states = cdfa__number_of_states(a);
+	unsigned int initial_nb_states = cdfa__get_number_of_states(a);
 	unsigned int nb_considered_letters = cdfa__number_of_considered_letters(a);
 	cdfa__automaton *new_aut = NULL;
 	cdfa__automaton_state working_state;
@@ -41,7 +41,7 @@ cdfa__automaton *cdfa__accessible_states_automaton(const cdfa__automaton * const
 	new_state_value[CDFA__WELL] = (cdfa__automaton_state) nb_states_to_keep;
 	states_to_keep[nb_states_to_keep++] = CDFA__WELL;
 
-	working_state = cdfa__starting_state(a);
+	working_state = cdfa__get_starting_state(a);
 
 	if (working_state != CDFA__WELL){
 		is_a_state_to_keep[working_state] = 1;
@@ -58,7 +58,7 @@ cdfa__automaton *cdfa__accessible_states_automaton(const cdfa__automaton * const
 		for (i = 0 ; i < nb_considered_letters ; i++){
 
 			current_letter = considered_letters[i];
-			next_state = cdfa__next_state(current_letter,working_state,a);
+			next_state = cdfa__get_next_state(current_letter,working_state,a);
 
 			if (!is_a_state_to_keep[next_state]){
 				is_a_state_to_keep[next_state] = 1;
@@ -71,7 +71,7 @@ cdfa__automaton *cdfa__accessible_states_automaton(const cdfa__automaton * const
 
 	new_aut = cdfa__empty_automaton(nb_states_to_keep,nb_considered_letters,considered_letters);
 
-	working_state = cdfa__starting_state(a);
+	working_state = cdfa__get_starting_state(a);
 	cdfa__set_as_the_starting_state(new_state_value[working_state],new_aut);
 
 	for (i = 0 ; i < nb_states_to_keep ; i++){
@@ -81,7 +81,7 @@ cdfa__automaton *cdfa__accessible_states_automaton(const cdfa__automaton * const
 		for (j = 0 ; j < nb_considered_letters ; j++){
 
 			current_letter = considered_letters[j];
-			next_state = cdfa__next_state(current_letter,working_state,a);
+			next_state = cdfa__get_next_state(current_letter,working_state,a);
 			cdfa__add_transition(i,current_letter,new_state_value[next_state],new_aut);
 		}
 

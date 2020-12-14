@@ -1,9 +1,3 @@
-/*
- * cdfa_modules.h
- *
- *  Created on: 5 févr. 2020
- *      Author: ajuvenn
- */
 
 #ifndef CDFA_MODULES_H_
 #define CDFA_MODULES_H_

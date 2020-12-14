@@ -36,6 +36,7 @@ void cdfa__free_dynamic_states_set_array(cdfa__dynamic_states_set_array *array)
 		free(array->states_sets[i]);
 	}
 
+	free(array->states_sets);
 	free(array);
 }
 

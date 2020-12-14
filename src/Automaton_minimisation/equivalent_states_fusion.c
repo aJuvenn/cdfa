@@ -14,7 +14,7 @@ unsigned int **cdfa__equivalent_states_matrix(const cdfa__automaton * const a)
 	cdfa__automaton_state i_next_state, j_next_state;
 	cdfa__letter current_letter;
 
-	unsigned int nb_initial_states = cdfa__number_of_states(a);
+	unsigned int nb_initial_states = cdfa__get_number_of_states(a);
 	unsigned int nb_considered_letters = cdfa__number_of_considered_letters(a);
 	const cdfa__letter * const considered_letters = cdfa__considered_letter(a);
 
@@ -45,8 +45,8 @@ unsigned int **cdfa__equivalent_states_matrix(const cdfa__automaton * const a)
 					for (k = 0 ; k < nb_considered_letters ; k++){
 
 						current_letter = considered_letters[k];
-						i_next_state = cdfa__next_state(current_letter,i,a);
-						j_next_state = cdfa__next_state(current_letter,j,a);
+						i_next_state = cdfa__get_next_state(current_letter,i,a);
+						j_next_state = cdfa__get_next_state(current_letter,j,a);
 
 						if (!are_equivalent[i_next_state][j_next_state]){
 							are_equivalent[i][j] = CDFA__FALSE;
@@ -74,7 +74,7 @@ cdfa__automaton *cdfa__states_fusion_automaton(const cdfa__automaton * const a)
 	cdfa__letter current_letter;
 	cdfa__automaton_state new_state,new_next_state;
 
-	unsigned int nb_initial_states = cdfa__number_of_states(a);
+	unsigned int nb_initial_states = cdfa__get_number_of_states(a);
 	unsigned int nb_considered_letters = cdfa__number_of_considered_letters(a);
 	const cdfa__letter * const considered_letters = cdfa__considered_letter(a);
 
@@ -117,7 +117,7 @@ cdfa__automaton *cdfa__states_fusion_automaton(const cdfa__automaton * const a)
 		for (j = 0 ; j < nb_considered_letters ; j++){
 
 			current_letter = considered_letters[j];
-			new_next_state = index_of_representative_of[cdfa__next_state(current_letter,i,a)];
+			new_next_state = index_of_representative_of[cdfa__get_next_state(current_letter,i,a)];
 
 			cdfa__add_transition(new_state,current_letter,new_next_state,new_aut);
 		}
@@ -127,7 +127,7 @@ cdfa__automaton *cdfa__states_fusion_automaton(const cdfa__automaton * const a)
 		}
 	}
 
-	new_state = index_of_representative_of[cdfa__starting_state(a)];
+	new_state = index_of_representative_of[cdfa__get_starting_state(a)];
 	cdfa__set_as_the_starting_state(new_state,new_aut);
 	cdfa__move_to_starting_state(new_aut);
 

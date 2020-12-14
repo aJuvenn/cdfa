@@ -41,7 +41,7 @@ typedef unsigned char cdfa__bool;
 
 typedef char cdfa__letter;
 
-unsigned int cdfa__number_of_states(const cdfa__automaton * const a);
+unsigned int cdfa__get_number_of_states(const cdfa__automaton * const a);
 
 cdfa__automaton *cdfa__empty_automaton(const unsigned int nb_states,
 										 const unsigned int nb_considered_letters,

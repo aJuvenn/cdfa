@@ -48,8 +48,8 @@ cdfa__automaton *cdfa__product_automaton(const cdfa__automaton * const a_1, cons
 	cdfa__automaton_state new_starting_state;
 
 
-	nb_states_1 = cdfa__number_of_states(a_1);
-	nb_states_2 = cdfa__number_of_states(a_2);
+	nb_states_1 = cdfa__get_number_of_states(a_1);
+	nb_states_2 = cdfa__get_number_of_states(a_2);
 	nb_letters_to_consider = cdfa__union_of_the_letters_to_consider(letters_to_consider,a_1,a_2);
 	new_aut = cdfa__empty_automaton(nb_states_1 * nb_states_2,nb_letters_to_consider,letters_to_consider);
 
@@ -60,11 +60,11 @@ cdfa__automaton *cdfa__product_automaton(const cdfa__automaton * const a_1, cons
 
 		for (q_1 = 0 ; q_1 < nb_states_1 ; q_1++){
 
-			next_state_1 = cdfa__next_state(current_letter,q_1,a_1);
+			next_state_1 = cdfa__get_next_state(current_letter,q_1,a_1);
 
 			for (q_2 = 0 ; q_2 < nb_states_2 ; q_2++){
 
-				next_state_2 = cdfa__next_state(current_letter,q_2,a_2);
+				next_state_2 = cdfa__get_next_state(current_letter,q_2,a_2);
 				new_q = q_1 + nb_states_1 * q_2;
 				new_next_state = next_state_1 + nb_states_1 * next_state_2;
 
@@ -73,7 +73,7 @@ cdfa__automaton *cdfa__product_automaton(const cdfa__automaton * const a_1, cons
 		}
 	}
 
-	new_starting_state = cdfa__starting_state(a_1) + nb_states_1 * cdfa__starting_state(a_2);
+	new_starting_state = cdfa__get_starting_state(a_1) + nb_states_1 * cdfa__get_starting_state(a_2);
 	cdfa__set_as_the_starting_state(new_starting_state,new_aut);
 	cdfa__move_to_starting_state(new_aut);
 
@@ -86,8 +86,8 @@ cdfa__automaton *cdfa__raw_language_union_automaton(const cdfa__automaton * cons
 {
 	cdfa__automaton_state q_1;
 	cdfa__automaton_state q_2;
-	unsigned int nb_states_1 = cdfa__number_of_states(a_1);
-	unsigned int nb_states_2 = cdfa__number_of_states(a_2);
+	unsigned int nb_states_1 = cdfa__get_number_of_states(a_1);
+	unsigned int nb_states_2 = cdfa__get_number_of_states(a_2);
 	cdfa__automaton *new_aut = NULL;
 
 
@@ -112,8 +112,8 @@ cdfa__automaton *cdfa__raw_language_intersection_automaton(const cdfa__automaton
 {
 	cdfa__automaton_state q_1;
 	cdfa__automaton_state q_2;
-	unsigned int nb_states_1 = cdfa__number_of_states(a_1);
-	unsigned int nb_states_2 = cdfa__number_of_states(a_2);
+	unsigned int nb_states_1 = cdfa__get_number_of_states(a_1);
+	unsigned int nb_states_2 = cdfa__get_number_of_states(a_2);
 	cdfa__automaton *new_aut = NULL;
 
 
@@ -138,8 +138,8 @@ cdfa__automaton *cdfa__raw_language_exclusion_automaton(const cdfa__automaton * 
 {
 	cdfa__automaton_state q_1;
 	cdfa__automaton_state q_2;
-	unsigned int nb_states_1 = cdfa__number_of_states(a_1);
-	unsigned int nb_states_2 = cdfa__number_of_states(a_2);
+	unsigned int nb_states_1 = cdfa__get_number_of_states(a_1);
+	unsigned int nb_states_2 = cdfa__get_number_of_states(a_2);
 	cdfa__automaton *new_aut = NULL;
 
 

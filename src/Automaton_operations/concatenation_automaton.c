@@ -16,13 +16,13 @@ cdfa__dynamic_states_set_array *cdfa__language_concatenation_new_states(const cd
 	cdfa__letter current_letter;
 	cdfa__automaton_state next_state;
 
-	const unsigned int nb_initial_states_1 = cdfa__number_of_states(a_1);
+	const unsigned int nb_initial_states_1 = cdfa__get_number_of_states(a_1);
 	const unsigned int nb_considered_letters_1 = cdfa__number_of_considered_letters(a_1);
-	const cdfa__automaton_state initial_starting_state_1 = cdfa__starting_state(a_1);
+	const cdfa__automaton_state initial_starting_state_1 = cdfa__get_starting_state(a_1);
 
-	const unsigned int nb_initial_states_2 = cdfa__number_of_states(a_2);
+	const unsigned int nb_initial_states_2 = cdfa__get_number_of_states(a_2);
 	const unsigned int nb_considered_letters_2 = cdfa__number_of_considered_letters(a_2);
-	const cdfa__automaton_state initial_starting_state_2 = cdfa__starting_state(a_2);
+	const cdfa__automaton_state initial_starting_state_2 = cdfa__get_starting_state(a_2);
 
 	const unsigned int nb_initial_states_sum = nb_initial_states_1 + nb_initial_states_2;
 	cdfa__letter new_letters_to_consider[nb_considered_letters_1 + nb_considered_letters_2];
@@ -67,7 +67,7 @@ cdfa__dynamic_states_set_array *cdfa__language_concatenation_new_states(const cd
 
 				if (current_states_set[j]){
 
-					next_state = cdfa__next_state(current_letter,j,a_1);
+					next_state = cdfa__get_next_state(current_letter,j,a_1);
 					next_states_set[next_state] = CDFA__TRUE;
 
 					if (cdfa__is_a_final_state(next_state,a_1)){
@@ -79,7 +79,7 @@ cdfa__dynamic_states_set_array *cdfa__language_concatenation_new_states(const cd
 			for (j = 0 ; j < nb_initial_states_2 ; j++){
 
 				if (current_states_set[j + nb_initial_states_1]){
-					next_state = cdfa__next_state(current_letter,j,a_2);
+					next_state = cdfa__get_next_state(current_letter,j,a_2);
 					next_states_set[next_state + nb_initial_states_1] = CDFA__TRUE;
 				}
 			}
@@ -117,12 +117,12 @@ cdfa__automaton *cdfa__raw_language_concatenation_automaton(const cdfa__automato
 	cdfa__letter current_letter;
 	cdfa__automaton_state next_state;
 
-	const unsigned int nb_initial_states_1 = cdfa__number_of_states(a_1);
+	const unsigned int nb_initial_states_1 = cdfa__get_number_of_states(a_1);
 	const unsigned int nb_considered_letters_1 = cdfa__number_of_considered_letters(a_1);
 
-	const unsigned int nb_initial_states_2 = cdfa__number_of_states(a_2);
+	const unsigned int nb_initial_states_2 = cdfa__get_number_of_states(a_2);
 	const unsigned int nb_considered_letters_2 = cdfa__number_of_considered_letters(a_2);
-	const cdfa__automaton_state initial_starting_state_2 = cdfa__starting_state(a_2);
+	const cdfa__automaton_state initial_starting_state_2 = cdfa__get_starting_state(a_2);
 
 	const unsigned int nb_initial_states_sum = nb_initial_states_1 + nb_initial_states_2;
 	cdfa__letter new_letters_to_consider[nb_considered_letters_1 + nb_considered_letters_2];
@@ -156,7 +156,7 @@ cdfa__automaton *cdfa__raw_language_concatenation_automaton(const cdfa__automato
 			for (k = 0 ; k < nb_initial_states_1 ; k++){
 
 				if (current_states_set[k]){
-					next_state = cdfa__next_state(current_letter,k,a_1);
+					next_state = cdfa__get_next_state(current_letter,k,a_1);
 					next_states_set[next_state] = CDFA__TRUE;
 
 					if (cdfa__is_a_final_state(next_state,a_1)){
@@ -168,7 +168,7 @@ cdfa__automaton *cdfa__raw_language_concatenation_automaton(const cdfa__automato
 			for (k = 0 ; k < nb_initial_states_2 ; k++){
 
 				if (current_states_set[k + nb_initial_states_1]){
-					next_state = cdfa__next_state(current_letter,k,a_2);
+					next_state = cdfa__get_next_state(current_letter,k,a_2);
 					next_states_set[next_state + nb_initial_states_1] = CDFA__TRUE;
 				}
 			}
